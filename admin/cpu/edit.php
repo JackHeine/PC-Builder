@@ -4,8 +4,9 @@
     require_once("../../dbConnect.php");
 
     if(isset($_POST['delete'])) {
-        $sql = "DELETE FROM cpu WHERE CPU_ID = " . $_GET['id'];
-        $conn->query($sql);
+        $stmt = $conn->prepare("DELETE FROM cpu WHERE CPU_ID =   ?");
+        $stmt->bind_param("i", $_GET['id']);
+        $stmt->execute();
         header("Location: index.php");
     }
 
@@ -17,8 +18,10 @@
         header("Location: index.php");
     }
     if(isset($_GET['id'])){
-        $sql = "SELECT * FROM cpu WHERE CPU_ID = " . $_GET['id'];
-        $results =$conn->query($sql);
+        $stmt = $conn->prepare("SELECT * FROM cpu WHERE CPU_ID = ?");
+        $stmt->bind_param("i", $_GET['id']);
+        $stmt->execute();
+        $results = $stmt->get_result();
         $res = $results->fetch_assoc();
     
 ?>

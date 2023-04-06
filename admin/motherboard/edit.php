@@ -4,13 +4,13 @@
     require_once("../../dbConnect.php");
 
     if(isset($_POST['delete'])){
-        $sql = "DELETE FROM motherboard WHERE Motherboard_ID = " . $_GET['id'];
-        $conn->query($sql);
+        $stmt = $conn->prepare("DELETE FROM motherboard WHERE Motherboard_ID = ?");
+        $stmt->bind_param("i", $_GET['id']);
+        $stmt->execute();
         header("Location: index.php");
     }
 
     if(isset($_POST['model'])){
-        
         $stmt = $conn->prepare("UPDATE motherboard SET Model = ?, Make_ID = ?, Socket_ID = ?, Form_ID = ?, Cost = ?, Stock = ? WHERE Motherboard_ID = " . $_GET['id']);
         $stmt->bind_param("siiidi", $_POST['model'], $_POST['make'], $_POST['socket'], $_POST['form-factor'], $_POST['cost'], $_POST['stock']);
         $stmt->execute();
@@ -18,8 +18,10 @@
     }
     
     if(isset($_GET['id'])){
-        $sql = "SELECT * FROM motherboard WHERE Motherboard_ID = " . $_GET['id'];
-        $results =$conn->query($sql);
+        $stmt = $conn->prepare("SELECT * FROM motherboard WHERE Motherboard_ID = ?");
+        $stmt->bind_param("i", $_GET['id']);
+        $stmt->execute();
+        $results = $stmt->get_result();
         $res = $results->fetch_assoc();
     
 ?>

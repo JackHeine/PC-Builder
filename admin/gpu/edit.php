@@ -4,8 +4,9 @@
     require_once("../../dbConnect.php");
 
     if(isset($_POST['delete'])) {
-        $sql = "DELETE FROM graphics_card WHERE GPU_ID = " . $_GET['id'];
-        $conn->query($sql);
+        $stmt = $conn->prepare("DELETE FROM graphics_card WHERE GPU_ID = ?");
+        $stmt->bind_param("i", $_GET['id']);
+        $stmt->execute();
         header("Location: index.php");
     }
 
@@ -17,8 +18,10 @@
         header("Location: index.php");
     }
     if(isset($_GET['id'])){
-        $sql = "SELECT * FROM graphics_card WHERE GPU_ID = " . $_GET['id'];
-        $results =$conn->query($sql);
+        $stmt = $conn->prepare("SELECT * FROM graphics_card WHERE GPU_ID =  ?");
+        $stmt->bind_param("i", $_GET['id']);
+        $stmt->execute();
+        $results = $stmt->get_result();
         $res = $results->fetch_assoc();
     
 ?>
