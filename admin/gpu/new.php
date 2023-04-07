@@ -13,6 +13,13 @@
 
     <div class="container">
         <!-- Content here -->
+        <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="../">Admin</a></li>
+            <li class="breadcrumb-item"><a href="index.php">GPUs</a></li>
+            <li class="breadcrumb-item active" aria-current="page">New GPU</li>
+        </ol>
+        </nav>
         <h1>New GPU</h1>
         <form method="POST">
             <div class="form-group">

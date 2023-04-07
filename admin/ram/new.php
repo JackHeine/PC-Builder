@@ -4,10 +4,8 @@
 
     if(isset($_POST['model'])){
         require_once("../../dbConnect.php");
-        echo "INSERT INTO cpu (Model, Make_ID, Socket_ID, Power_Usage, Cost, Stock) VALUES ('" . $_POST['model'] . "', '" . (int)$_POST['make'] . "', '" . (int)$_POST['socket'] . "', '" . (int)$_POST['power'] . "', '" . (float)$_POST['cost'] . "', '" . (int)$_POST['stock'] . "')";
-        $sql = "INSERT INTO cpu (Model, Make_ID, Socket_ID, Power_Usage, Cost, Stock) VALUES ('" . $_POST['model'] . "', '" . (int)$_POST['make'] . "', '" . (int)$_POST['socket'] . "', '" . (int)$_POST['power'] . "', '" . (float)$_POST['cost'] . "', '" . (int)$_POST['stock'] . "')";
-        $stmt = $conn->prepare("INSERT INTO cpu (Model, Make_ID, Socket_ID, Power_Usage, Cost, Stock) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("siiidi", $_POST['model'], $_POST['make'], $_POST['socket'], $_POST['power'], $_POST['cost'], $_POST['stock']);
+        $stmt = $conn->prepare("INSERT INTO graphics_card (Model, Make_ID, Memory, Power_Usage, Cost, Stock) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("siiidi", $_POST['model'], $_POST['make'], $_POST['memory'], $_POST['power'], $_POST['cost'], $_POST['stock']);
         $stmt->execute();
         header("Location: index.php");
     }
@@ -18,11 +16,11 @@
         <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="../">Admin</a></li>
-            <li class="breadcrumb-item"><a href="index.php">CPUs</a></li>
-            <li class="breadcrumb-item active" aria-current="page">New CPU</li>
+            <li class="breadcrumb-item"><a href="index.php">RAM</a></li>
+            <li class="breadcrumb-item active" aria-current="page">New RAM</li>
         </ol>
         </nav>
-        <h1>New CPU</h1>
+        <h1>New GPU</h1>
         <form method="POST">
             <div class="form-group">
                 <label for="model">Model Name</label>
@@ -42,17 +40,8 @@
                 </select>    
             </div>
             <div class="form-group">
-                <label for="socket">Socket</label>
-                <select class="form-select" name="socket" for="socket" required>
-                    <?php
-                    require_once("../../dbConnect.php");
-                    $sql = "SELECT * FROM socket";
-                    $results =$conn->query($sql);
-                    foreach($results as $r){
-                        echo "<option value='" . $r['Socket_ID'] . "'>" . $r['Name'] . "</option>";
-                    }
-                    ?>
-                </select>    
+                <label for="memory">Memory</label>
+                <input type="number" class="form-control" id="memory" name="memory" required>
             </div>
             <div class="form-group">
                 <label for="power">Power Usage</label>

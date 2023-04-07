@@ -8,16 +8,17 @@
         <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="../">Admin</a></li>
-            <li class="breadcrumb-item active" aria-current="page">CPUs</li>
+            <li class="breadcrumb-item active" aria-current="page">RAM</li>
         </ol>
         </nav>
-        <h1 class="float-left">CPUs</h1>
-        <a class="float-right  btn btn-primary" href="./new.php">Add CPU</a>
+        <h1 class="float-left">RAM</h1>
+        <a class="float-right  btn btn-primary" href="./new.php">Create RAM</a>
         <table class="table">
             <thead class="thead-dark">
                 <tr>
                 <th scope="col">Make</th>
                 <th scope="col">Model</th>
+                <th scope="col">Memory</th>
                 <th scope="col">Power Usage</th>
                 <th scope="col">Price</th>
                 <th scope="col">Stock</th>
@@ -32,17 +33,18 @@
                     if (!$conn) {
                         die("Connection failed: " . mysqli_connect_error());
                     }
-                    $sql = "SELECT * FROM cpu_info";
+                    $sql = "SELECT * FROM gpu_info";
                     $results =$conn->query($sql);
 
                     foreach($results as $r){
                         echo "<tr>";
                         echo "<td>" . $r['Manufacturer'] . "</td>";
                         echo "<td>" . $r['Model'] . "</td>";
+                        echo "<td>" . $r['Memory'] . "</td>";
                         echo "<td>" . $r['Power_Usage'] . " W</td>";
                         echo "<td>$" . $r['Cost'] . "</td>";
                         echo "<td>" . $r['Stock'] . "</td>";
-                        echo "<td><a href='./edit.php?id=" . $r['CPU_ID'] . "'>Edit</a></td>";
+                        echo "<td><a href='./edit.php?id=" . $r['GPU_ID'] . "'>Edit</a></td>";
                         echo "</tr>";
                     }
 

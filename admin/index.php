@@ -11,6 +11,7 @@
             <li><a href="./cpu/index.php">CPUs</a></li>
             <li><a href="./gpu/index.php">GPUs</a></li>
             <li><a href="./motherboard/index.php">Motherboards</a></li>
+            <li><a href="./ram/index.php">RAM</a></li>
         </ul>
         
     </div>
