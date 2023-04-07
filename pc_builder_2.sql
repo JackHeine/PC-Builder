@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 06, 2023 at 04:32 AM
+-- Generation Time: Apr 07, 2023 at 06:08 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -235,8 +235,10 @@ CREATE TABLE `motherboard_info` (
 
 CREATE TABLE `PC_Build` (
   `PC_ID` int(11) NOT NULL,
+  `Nickname` varchar(50) NOT NULL,
   `Price` decimal(8,2) DEFAULT NULL,
-  `Shipped` tinyint(1) NOT NULL,
+  `Order_Placed` tinyint(1) NOT NULL DEFAULT 0,
+  `Shipped` tinyint(1) NOT NULL DEFAULT 0,
   `User_ID` int(11) NOT NULL,
   `Chasis_ID` int(11) DEFAULT NULL,
   `PSU_ID` int(11) DEFAULT NULL,
@@ -246,6 +248,15 @@ CREATE TABLE `PC_Build` (
   `Storage_ID` int(11) DEFAULT NULL,
   `GPU_ID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `PC_Build`
+--
+
+INSERT INTO `PC_Build` (`PC_ID`, `Nickname`, `Price`, `Order_Placed`, `Shipped`, `User_ID`, `Chasis_ID`, `PSU_ID`, `RAM_ID`, `CPU_ID`, `Motherboard_ID`, `Storage_ID`, `GPU_ID`) VALUES
+(1, 'foo', NULL, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(2, 'Test', NULL, 0, 0, 1, NULL, NULL, NULL, 5, 1, NULL, NULL),
+(8, 'Ultimate Gaming', NULL, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -325,6 +336,13 @@ CREATE TABLE `User` (
   `First_Name` varchar(50) NOT NULL,
   `Last_Name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `User`
+--
+
+INSERT INTO `User` (`User_ID`, `Email`, `Password`, `First_Name`, `Last_Name`) VALUES
+(1, 'test@mail.com', 'Password', 'Test', 'Man');
 
 -- --------------------------------------------------------
 
@@ -505,7 +523,7 @@ ALTER TABLE `Motherboard`
 -- AUTO_INCREMENT for table `PC_Build`
 --
 ALTER TABLE `PC_Build`
-  MODIFY `PC_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `PC_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `Power_Supply`
@@ -535,7 +553,7 @@ ALTER TABLE `Storage`
 -- AUTO_INCREMENT for table `User`
 --
 ALTER TABLE `User`
-  MODIFY `User_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `User_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
