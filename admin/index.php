@@ -12,6 +12,7 @@
             <li><a href="./gpu/index.php">GPUs</a></li>
             <li><a href="./motherboard/index.php">Motherboards</a></li>
             <li><a href="./ram/index.php">RAM</a></li>
+            <li><a href="./psu/index.php">Power Supply (PSU)</a></li>
         </ul>
         
     </div>

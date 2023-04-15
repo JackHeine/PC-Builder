@@ -12,8 +12,8 @@
 
     if(isset($_POST['model'])){
         
-        $stmt = $conn->prepare("UPDATE cpu SET Model = ?, Make_ID = ?, Socket_ID = ?, Power_Usage = ?, Cost = ?, Stock = ? WHERE CPU_ID = " . $_GET['id']);
-        $stmt->bind_param("siiidi", $_POST['model'], $_POST['make'], $_POST['socket'], $_POST['power'], $_POST['cost'], $_POST['stock']);
+        $stmt = $conn->prepare("UPDATE cpu SET Model = ?, Make_ID = ?, Socket_ID = ?, Power_Usage = ?, Cost = ?, Stock = ? WHERE CPU_ID = ?");
+        $stmt->bind_param("siiidii", $_POST['model'], $_POST['make'], $_POST['socket'], $_POST['power'], $_POST['cost'], $_POST['stock'], $_GET['id']);
         $stmt->execute();
         header("Location: index.php");
     }

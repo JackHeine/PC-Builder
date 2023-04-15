@@ -11,8 +11,8 @@
     }
 
     if(isset($_POST['model'])){
-        $stmt = $conn->prepare("UPDATE motherboard SET Model = ?, Make_ID = ?, Socket_ID = ?, Form_ID = ?, Cost = ?, Stock = ? WHERE Motherboard_ID = " . $_GET['id']);
-        $stmt->bind_param("siiidi", $_POST['model'], $_POST['make'], $_POST['socket'], $_POST['form-factor'], $_POST['cost'], $_POST['stock']);
+        $stmt = $conn->prepare("UPDATE motherboard SET Model = ?, Make_ID = ?, Socket_ID = ?, Form_ID = ?, Cost = ?, Stock = ? WHERE Motherboard_ID = ?");
+        $stmt->bind_param("siiidii", $_POST['model'], $_POST['make'], $_POST['socket'], $_POST['form-factor'], $_POST['cost'], $_POST['stock'], $_GET['id']);
         $stmt->execute();
         header("Location: index.php");
     }

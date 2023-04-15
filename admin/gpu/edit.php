@@ -12,8 +12,8 @@
 
     if(isset($_POST['model'])){
         
-        $stmt = $conn->prepare("UPDATE graphics_card SET Model = ?, Make_ID = ?, Memory = ?, Power_Usage = ?, Cost = ?, Stock = ? WHERE GPU_ID = " . $_GET['id']);
-        $stmt->bind_param("siiidi", $_POST['model'], $_POST['make'], $_POST['memory'], $_POST['power'], $_POST['cost'], $_POST['stock']);
+        $stmt = $conn->prepare("UPDATE graphics_card SET Model = ?, Make_ID = ?, Memory = ?, Power_Usage = ?, Cost = ?, Stock = ? WHERE GPU_ID = ?");
+        $stmt->bind_param("siiidii", $_POST['model'], $_POST['make'], $_POST['memory'], $_POST['power'], $_POST['cost'], $_POST['stock'], $_GET['id']);
         $stmt->execute();
         header("Location: index.php");
     }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 07, 2023 at 06:08 PM
+-- Generation Time: Apr 15, 2023 at 08:34 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -159,7 +159,8 @@ CREATE TABLE `Graphics_Card` (
 --
 
 INSERT INTO `Graphics_Card` (`GPU_ID`, `Model`, `Make_ID`, `Memory`, `Power_Usage`, `Cost`, `Stock`) VALUES
-(1, 'TUF Gaming GeForce RTX™ 4080', 3, 16, 320, '1199.99', 13);
+(1, 'TUF Gaming GeForce RTX™ 4080', 3, 16, 320, '1199.99', 15),
+(3, 'WINDFORCE GeForce RTX 4070', 4, 12, 200, '599.00', 100);
 
 -- --------------------------------------------------------
 
@@ -181,7 +182,9 @@ INSERT INTO `Manufacturer` (`Make_ID`, `Manufacturer`) VALUES
 (2, 'AMD'),
 (3, 'ASUS'),
 (4, 'Gigabyte'),
-(5, 'MSI');
+(5, 'MSI'),
+(6, 'Crucial'),
+(7, 'Corsair');
 
 -- --------------------------------------------------------
 
@@ -254,7 +257,7 @@ CREATE TABLE `PC_Build` (
 --
 
 INSERT INTO `PC_Build` (`PC_ID`, `Nickname`, `Price`, `Order_Placed`, `Shipped`, `User_ID`, `Chasis_ID`, `PSU_ID`, `RAM_ID`, `CPU_ID`, `Motherboard_ID`, `Storage_ID`, `GPU_ID`) VALUES
-(1, 'foo', NULL, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(1, 'foo', NULL, 0, 0, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL),
 (2, 'Test', NULL, 0, 0, 1, NULL, NULL, NULL, 5, 1, NULL, NULL),
 (8, 'Ultimate Gaming', NULL, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
@@ -273,6 +276,29 @@ CREATE TABLE `Power_Supply` (
   `Stock` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `Power_Supply`
+--
+
+INSERT INTO `Power_Supply` (`PSU_ID`, `Model`, `Make_ID`, `Wattage`, `Cost`, `Stock`) VALUES
+(1, 'RM Series RM850', 7, 850, '140.00', 10);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `psu_info`
+-- (See below for the actual view)
+--
+CREATE TABLE `psu_info` (
+`Make_ID` int(11)
+,`PSU_ID` int(11)
+,`Model` varchar(50)
+,`Wattage` int(11)
+,`Cost` decimal(7,2)
+,`Stock` int(11)
+,`Manufacturer` varchar(50)
+);
+
 -- --------------------------------------------------------
 
 --
@@ -288,6 +314,30 @@ CREATE TABLE `RAM` (
   `Cost` decimal(7,2) NOT NULL,
   `Stock` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `RAM`
+--
+
+INSERT INTO `RAM` (`RAM_ID`, `Model`, `Make_ID`, `Size`, `Speed`, `Cost`, `Stock`) VALUES
+(1, ' VENGEANCE LPX', 7, 16, 3600, '43.00', 15);
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `ram_info`
+-- (See below for the actual view)
+--
+CREATE TABLE `ram_info` (
+`Make_ID` int(11)
+,`RAM_ID` int(11)
+,`Model` varchar(50)
+,`Size` int(11)
+,`Speed` int(11)
+,`Cost` decimal(7,2)
+,`Stock` int(11)
+,`Manufacturer` varchar(50)
+);
 
 -- --------------------------------------------------------
 
@@ -370,6 +420,24 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `motherboard_info`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `motherboard_info`  AS   (select `motherboard`.`Socket_ID` AS `Socket_ID`,`motherboard`.`Make_ID` AS `Make_ID`,`motherboard`.`Form_ID` AS `Form_ID`,`motherboard`.`Motherboard_ID` AS `Motherboard_ID`,`motherboard`.`Model` AS `Model`,`motherboard`.`Cost` AS `Cost`,`motherboard`.`Stock` AS `Stock`,`form_factor`.`Form_Name` AS `Form_Name`,`manufacturer`.`Manufacturer` AS `Manufacturer`,`socket`.`Name` AS `Name` from (((`motherboard` join `form_factor` on(`motherboard`.`Form_ID` = `form_factor`.`Form_ID`)) join `manufacturer` on(`motherboard`.`Make_ID` = `manufacturer`.`Make_ID`)) join `socket` on(`motherboard`.`Socket_ID` = `socket`.`Socket_ID`)))  ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `psu_info`
+--
+DROP TABLE IF EXISTS `psu_info`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `psu_info`  AS   (select `power_supply`.`Make_ID` AS `Make_ID`,`power_supply`.`PSU_ID` AS `PSU_ID`,`power_supply`.`Model` AS `Model`,`power_supply`.`Wattage` AS `Wattage`,`power_supply`.`Cost` AS `Cost`,`power_supply`.`Stock` AS `Stock`,`manufacturer`.`Manufacturer` AS `Manufacturer` from (`power_supply` join `manufacturer` on(`power_supply`.`Make_ID` = `manufacturer`.`Make_ID`)))  ;
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `ram_info`
+--
+DROP TABLE IF EXISTS `ram_info`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ram_info`  AS   (select `ram`.`Make_ID` AS `Make_ID`,`ram`.`RAM_ID` AS `RAM_ID`,`ram`.`Model` AS `Model`,`ram`.`Size` AS `Size`,`ram`.`Speed` AS `Speed`,`ram`.`Cost` AS `Cost`,`ram`.`Stock` AS `Stock`,`manufacturer`.`Manufacturer` AS `Manufacturer` from (`ram` join `manufacturer` on(`ram`.`Make_ID` = `manufacturer`.`Make_ID`)))  ;
 
 --
 -- Indexes for dumped tables
@@ -505,13 +573,13 @@ ALTER TABLE `Form_Factor`
 -- AUTO_INCREMENT for table `Graphics_Card`
 --
 ALTER TABLE `Graphics_Card`
-  MODIFY `GPU_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `GPU_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `Manufacturer`
 --
 ALTER TABLE `Manufacturer`
-  MODIFY `Make_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `Make_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `Motherboard`
@@ -529,13 +597,13 @@ ALTER TABLE `PC_Build`
 -- AUTO_INCREMENT for table `Power_Supply`
 --
 ALTER TABLE `Power_Supply`
-  MODIFY `PSU_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `PSU_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `RAM`
 --
 ALTER TABLE `RAM`
-  MODIFY `RAM_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `RAM_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `Socket`

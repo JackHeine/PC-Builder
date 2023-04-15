@@ -4,8 +4,8 @@
 
     if(isset($_POST['model'])){
         require_once("../../dbConnect.php");
-        $stmt = $conn->prepare("INSERT INTO ram (Model, Make_ID, Size, Speed, Cost, Stock) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("siiidi", $_POST['model'], $_POST['make'], $_POST['size'], $_POST['speed'], $_POST['cost'], $_POST['stock']);
+        $stmt = $conn->prepare("INSERT INTO power_supply (Model, Make_ID, Wattage, Cost, Stock) VALUES (?, ?, ?, ?, ?)");
+        $stmt->bind_param("siidi", $_POST['model'], $_POST['make'], $_POST['wattage'], $_POST['cost'], $_POST['stock']);
         $stmt->execute();
         header("Location: index.php");
     }
@@ -16,11 +16,11 @@
         <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="../">Admin</a></li>
-            <li class="breadcrumb-item"><a href="index.php">RAM</a></li>
-            <li class="breadcrumb-item active" aria-current="page">New RAM</li>
+            <li class="breadcrumb-item"><a href="index.php">Power Supply</a></li>
+            <li class="breadcrumb-item active" aria-current="page">New Power Supply</li>
         </ol>
         </nav>
-        <h1>New RAM</h1>
+        <h1>New Power Supply</h1>
         <form method="POST">
             <div class="form-group">
                 <label for="model">Model Name</label>
@@ -40,12 +40,8 @@
                 </select>    
             </div>
             <div class="form-group">
-                <label for="size">Size</label>
-                <input type="number" class="form-control" id="size" name="size" required>
-            </div>
-            <div class="form-group">
-                <label for="speed">Speed</label>
-                <input type="number" class="form-control" id="speed" name="speed" required>
+                <label for="wattage">Wattage</label>
+                <input type="number" class="form-control" id="wattage" name="wattage" required>
             </div>
             <div class="form-group">
                 <label for="Cost">Cost</label>

@@ -4,7 +4,7 @@
     require_once("../../dbConnect.php");
 
     if(isset($_POST['delete'])) {
-        $stmt = $conn->prepare("DELETE FROM ram WHERE RAM_ID = ?");
+        $stmt = $conn->prepare("DELETE FROM power_supply WHERE PSU_ID = ?");
         $stmt->bind_param("i", $_GET['id']);
         $stmt->execute();
         header("Location: index.php");
@@ -12,13 +12,13 @@
 
     if(isset($_POST['model'])){
         
-        $stmt = $conn->prepare("UPDATE ram SET Model = ?, Make_ID = ?, Size = ?, Speed = ?, Cost = ?, Stock = ? WHERE RAM_ID = ?");
-        $stmt->bind_param("siiidii", $_POST['model'], $_POST['make'], $_POST['size'], $_POST['speed'], $_POST['cost'], $_POST['stock'], $_GET['id']);
+        $stmt = $conn->prepare("UPDATE power_supply SET Model = ?, Make_ID = ?, Wattage = ?, Cost = ?, Stock = ? WHERE PSU_ID = ?");
+        $stmt->bind_param("siidii", $_POST['model'], $_POST['make'], $_POST['wattage'], $_POST['cost'], $_POST['stock'],  $_GET['id']);
         $stmt->execute();
         header("Location: index.php");
     }
     if(isset($_GET['id'])){
-        $stmt = $conn->prepare("SELECT * FROM ram WHERE RAM_ID =  ?");
+        $stmt = $conn->prepare("SELECT * FROM power_supply WHERE PSU_ID =  ?");
         $stmt->bind_param("i", $_GET['id']);
         $stmt->execute();
         $results = $stmt->get_result();
@@ -31,11 +31,11 @@
         <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="../">Admin</a></li>
-            <li class="breadcrumb-item"><a href="index.php">RAM</a></li>
+            <li class="breadcrumb-item"><a href="index.php">Power Supply</a></li>
             <li class="breadcrumb-item active" aria-current="page"><?= $res["Model"] ?></li>
         </ol>
         </nav>
-        <h1>Update RAM</h1>
+        <h1>Update Power Supply</h1>
         <form method="POST">
             <div class="form-group">
                 <label for="model">Model Name</label>
@@ -59,13 +59,8 @@
                 </select>    
             </div>
             <div class="form-group">
-                <label for="size">Size</label>
-                <input type="number" class="form-control" id="size" name="size" value="<?= $res["Size"] ?>" required>
-            </div>
-            <div class="form-group">
-                <label for="power">Speed</label>
-                <input type="number" class="form-control" id="speed" name="speed" value="<?= $res["Speed"] ?>" required>
-            </div>
+                <label for="wattage">Wattage</label>
+                <input type="number" class="form-control" id="wattage" name="wattage" value="<?= $res["Wattage"] ?>" required>
             <div class="form-group">
                 <label for="Cost">Cost</label>
                 <input type="number" class="form-control" step="0.01" id="cost" name="cost" value="<?= $res["Cost"] ?>" required>
