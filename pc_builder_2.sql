@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 15, 2023 at 08:34 PM
+-- Generation Time: Apr 16, 2023 at 06:00 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -21,20 +21,82 @@ SET time_zone = "+00:00";
 -- Database: `pc_builder_2`
 --
 
+DELIMITER $$
+--
+-- Functions
+--
+CREATE DEFINER=`root`@`localhost` FUNCTION `Current_Build_Percent` (`Build` INT) RETURNS INT(11)  BEGIN
+DECLARE Percent INT;
+
+SELECT ROUND(((
+    CASE WHEN CPU_ID IS NOT NULL THEN 1 ELSE 0 END + 
+    CASE WHEN Motherboard_ID IS NOT NULL THEN 1 ELSE 0 END + 
+    CASE WHEN GPU_ID IS NOT NULL THEN 1 ELSE 0 END + 
+    CASE WHEN RAM_ID IS NOT NULL THEN 1 ELSE 0 END + 
+    CASE WHEN Storage_ID IS NOT NULL THEN 1 ELSE 0 END + 
+    CASE WHEN PSU_ID IS NOT NULL THEN 1 ELSE 0 END + 
+    CASE WHEN Chassis_ID IS NOT NULL THEN 1 ELSE 0 END 
+    ) * (1/7)) * 100) INTO Percent FROM PC_Build
+    WHERE PC_Build.PC_ID = Build;
+    RETURN Percent;
+    END$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `Current_Build_Price` (`Build` INT) RETURNS DECIMAL(10,0)  BEGIN
+DECLARE Price Decimal;
+SELECT 
+(ifnull(CPU.Cost, 0) + 
+ifnull(Motherboard.Cost, 0) +
+ifnull(Graphics_Card.Cost, 0) + 
+ifnull(RAM.Cost, 0) +
+ifnull(Storage.Cost, 0) + 
+ifnull(Power_Supply.Cost, 0) +
+ifnull(Chassis.Cost, 0)) INTO Price FROM `PC_Build`
+LEFT JOIN CPU ON CPU.CPU_ID = PC_Build.CPU_ID
+LEFT JOIN Motherboard ON Motherboard.Motherboard_ID = PC_Build.Motherboard_ID
+LEFT JOIN Graphics_Card ON Graphics_Card.GPU_ID = PC_Build.GPU_ID
+LEFT JOIN RAM ON RAM.RAM_ID = PC_Build.RAM_ID
+LEFT JOIN Storage ON Storage.Storage_ID = PC_Build.Storage_ID
+LEFT JOIN Power_Supply ON Power_Supply.PSU_ID = PC_Build.PSU_ID
+LEFT JOIN Chassis ON Chassis.Chassis_ID = PC_Build.Chassis_ID
+WHERE PC_Build.PC_ID = Build;
+
+RETURN Price;
+
+END$$
+
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Chasis`
+-- Table structure for table `Chassis`
 --
 
-CREATE TABLE `Chasis` (
-  `Chasis_ID` int(11) NOT NULL,
+CREATE TABLE `Chassis` (
+  `Chassis_ID` int(11) NOT NULL,
   `Model` varchar(50) NOT NULL,
   `Cost` decimal(7,2) NOT NULL,
   `Stock` int(11) NOT NULL,
   `Make_ID` int(11) NOT NULL,
   `Form_ID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Stand-in structure for view `chassis_info`
+-- (See below for the actual view)
+--
+CREATE TABLE `chassis_info` (
+`Form_ID` int(11)
+,`Make_ID` int(11)
+,`Chassis_ID` int(11)
+,`Model` varchar(50)
+,`Cost` decimal(7,2)
+,`Stock` int(11)
+,`Manufacturer` varchar(50)
+,`Form_Name` varchar(50)
+);
 
 -- --------------------------------------------------------
 
@@ -57,12 +119,12 @@ CREATE TABLE `CPU` (
 --
 
 INSERT INTO `CPU` (`CPU_ID`, `Model`, `Power_Usage`, `Cost`, `Stock`, `Socket_ID`, `Make_ID`) VALUES
-(1, 'Core i9-13900K', 253, '589.99', 20, 1, 1),
+(1, 'Core i9-13900K', 253, '589.99', 21, 1, 1),
 (5, 'Core i7-13700K', 253, '409.00', 26, 1, 1),
 (6, 'Core i5-13600K', 181, '319.00', 10, 1, 1),
-(7, 'Ryzen 9 7950X', 230, '699.00', 80, 2, 2),
+(7, 'Ryzen 9 7950X', 230, '699.00', 79, 2, 2),
 (8, 'Ryzen 7 7700X', 142, '399.00', 78, 2, 2),
-(9, 'Ryzen 5 7600X', 142, '299.00', 181, 2, 2);
+(9, 'Ryzen 5 7600X', 142, '299.00', 180, 2, 2);
 
 -- --------------------------------------------------------
 
@@ -209,7 +271,7 @@ CREATE TABLE `Motherboard` (
 INSERT INTO `Motherboard` (`Motherboard_ID`, `Model`, `Make_ID`, `Cost`, `Stock`, `Form_ID`, `Socket_ID`) VALUES
 (1, 'ROG Maximus Z790 Hero (WiFi 6E) ', 3, '609.00', 34, 1, 1),
 (2, 'MAG B560M Mortar Gaming Motherboard', 5, '109.00', 12, 2, 1),
-(3, 'X670 AORUS ELITE AX', 4, '289.00', 12, 1, 2);
+(3, 'X670 AORUS ELITE AX', 4, '289.00', 11, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -243,7 +305,7 @@ CREATE TABLE `PC_Build` (
   `Order_Placed` tinyint(1) NOT NULL DEFAULT 0,
   `Shipped` tinyint(1) NOT NULL DEFAULT 0,
   `User_ID` int(11) NOT NULL,
-  `Chasis_ID` int(11) DEFAULT NULL,
+  `Chassis_ID` int(11) DEFAULT NULL,
   `PSU_ID` int(11) DEFAULT NULL,
   `RAM_ID` int(11) DEFAULT NULL,
   `CPU_ID` int(11) DEFAULT NULL,
@@ -256,10 +318,32 @@ CREATE TABLE `PC_Build` (
 -- Dumping data for table `PC_Build`
 --
 
-INSERT INTO `PC_Build` (`PC_ID`, `Nickname`, `Price`, `Order_Placed`, `Shipped`, `User_ID`, `Chasis_ID`, `PSU_ID`, `RAM_ID`, `CPU_ID`, `Motherboard_ID`, `Storage_ID`, `GPU_ID`) VALUES
-(1, 'foo', NULL, 0, 0, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL),
+INSERT INTO `PC_Build` (`PC_ID`, `Nickname`, `Price`, `Order_Placed`, `Shipped`, `User_ID`, `Chassis_ID`, `PSU_ID`, `RAM_ID`, `CPU_ID`, `Motherboard_ID`, `Storage_ID`, `GPU_ID`) VALUES
+(1, 'foo', NULL, 0, 0, 1, NULL, NULL, NULL, 7, 3, NULL, NULL),
 (2, 'Test', NULL, 0, 0, 1, NULL, NULL, NULL, 5, 1, NULL, NULL),
-(8, 'Ultimate Gaming', NULL, 0, 0, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(8, 'Ultimate Gaming', NULL, 0, 0, 1, NULL, NULL, NULL, 9, NULL, NULL, NULL);
+
+--
+-- Triggers `PC_Build`
+--
+DELIMITER $$
+CREATE TRIGGER `update_cpu_stock` AFTER UPDATE ON `PC_Build` FOR EACH ROW BEGIN
+   IF !(NEW.CPU_ID <=> OLD.CPU_ID) THEN
+      UPDATE CPU SET CPU.Stock = (SELECT Stock FROM CPU AS C WHERE C.CPU_ID = NEW.CPU_ID) - 1 WHERE CPU_ID = NEW.CPU_ID;
+      UPDATE CPU SET CPU.Stock = (SELECT Stock FROM CPU AS C WHERE C.CPU_ID = OLD.CPU_ID) + 1 WHERE CPU_ID = OLD.CPU_ID;
+   END IF;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `update_motherboard_stock` AFTER UPDATE ON `PC_Build` FOR EACH ROW BEGIN
+   IF !(NEW.Motherboard_ID <=> OLD.Motherboard_ID) THEN
+      UPDATE Motherboard SET Motherboard.Stock = (SELECT Stock FROM Motherboard AS M WHERE M.Motherboard_ID = NEW.Motherboard_ID) - 1 WHERE Motherboard_ID = NEW.Motherboard_ID;
+      UPDATE Motherboard SET Motherboard.Stock = (SELECT Stock FROM Motherboard AS M WHERE M.Motherboard_ID = OLD.Motherboard_ID) + 1 WHERE Motherboard_ID = OLD.Motherboard_ID;
+   END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -376,6 +460,23 @@ CREATE TABLE `Storage` (
 -- --------------------------------------------------------
 
 --
+-- Stand-in structure for view `storage_info`
+-- (See below for the actual view)
+--
+CREATE TABLE `storage_info` (
+`Type_ID` int(11)
+,`Make_ID` int(11)
+,`Storage_ID` int(11)
+,`Model` varchar(50)
+,`Cost` decimal(7,2)
+,`Stock` int(11)
+,`Manufacturer` varchar(50)
+,`Type` varchar(50)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `User`
 --
 
@@ -393,6 +494,15 @@ CREATE TABLE `User` (
 
 INSERT INTO `User` (`User_ID`, `Email`, `Password`, `First_Name`, `Last_Name`) VALUES
 (1, 'test@mail.com', 'Password', 'Test', 'Man');
+
+-- --------------------------------------------------------
+
+--
+-- Structure for view `chassis_info`
+--
+DROP TABLE IF EXISTS `chassis_info`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `chassis_info`  AS   (select `chassis`.`Form_ID` AS `Form_ID`,`chassis`.`Make_ID` AS `Make_ID`,`chassis`.`Chassis_ID` AS `Chassis_ID`,`chassis`.`Model` AS `Model`,`chassis`.`Cost` AS `Cost`,`chassis`.`Stock` AS `Stock`,`manufacturer`.`Manufacturer` AS `Manufacturer`,`form_factor`.`Form_Name` AS `Form_Name` from ((`chassis` join `manufacturer` on(`chassis`.`Make_ID` = `manufacturer`.`Make_ID`)) join `form_factor` on(`chassis`.`Form_ID` = `form_factor`.`Form_ID`)))  ;
 
 -- --------------------------------------------------------
 
@@ -439,15 +549,24 @@ DROP TABLE IF EXISTS `ram_info`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `ram_info`  AS   (select `ram`.`Make_ID` AS `Make_ID`,`ram`.`RAM_ID` AS `RAM_ID`,`ram`.`Model` AS `Model`,`ram`.`Size` AS `Size`,`ram`.`Speed` AS `Speed`,`ram`.`Cost` AS `Cost`,`ram`.`Stock` AS `Stock`,`manufacturer`.`Manufacturer` AS `Manufacturer` from (`ram` join `manufacturer` on(`ram`.`Make_ID` = `manufacturer`.`Make_ID`)))  ;
 
+-- --------------------------------------------------------
+
+--
+-- Structure for view `storage_info`
+--
+DROP TABLE IF EXISTS `storage_info`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `storage_info`  AS   (select `storage`.`Type_ID` AS `Type_ID`,`storage`.`Make_ID` AS `Make_ID`,`storage`.`Storage_ID` AS `Storage_ID`,`storage`.`Model` AS `Model`,`storage`.`Cost` AS `Cost`,`storage`.`Stock` AS `Stock`,`manufacturer`.`Manufacturer` AS `Manufacturer`,`drive_type`.`Type` AS `Type` from ((`storage` join `manufacturer` on(`storage`.`Make_ID` = `manufacturer`.`Make_ID`)) join `drive_type` on(`storage`.`Type_ID` = `drive_type`.`Type_ID`)))  ;
+
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `Chasis`
+-- Indexes for table `Chassis`
 --
-ALTER TABLE `Chasis`
-  ADD PRIMARY KEY (`Chasis_ID`),
+ALTER TABLE `Chassis`
+  ADD PRIMARY KEY (`Chassis_ID`),
   ADD KEY `Make_ID` (`Make_ID`),
   ADD KEY `Form_ID` (`Form_ID`);
 
@@ -499,7 +618,7 @@ ALTER TABLE `Motherboard`
 ALTER TABLE `PC_Build`
   ADD PRIMARY KEY (`PC_ID`),
   ADD KEY `User_ID` (`User_ID`),
-  ADD KEY `Chasis_ID` (`Chasis_ID`),
+  ADD KEY `Chasis_ID` (`Chassis_ID`),
   ADD KEY `PSU_ID` (`PSU_ID`),
   ADD KEY `RAM_ID` (`RAM_ID`),
   ADD KEY `CPU_ID` (`CPU_ID`),
@@ -546,10 +665,10 @@ ALTER TABLE `User`
 --
 
 --
--- AUTO_INCREMENT for table `Chasis`
+-- AUTO_INCREMENT for table `Chassis`
 --
-ALTER TABLE `Chasis`
-  MODIFY `Chasis_ID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `Chassis`
+  MODIFY `Chassis_ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `CPU`
@@ -628,11 +747,11 @@ ALTER TABLE `User`
 --
 
 --
--- Constraints for table `Chasis`
+-- Constraints for table `Chassis`
 --
-ALTER TABLE `Chasis`
-  ADD CONSTRAINT `chasis_ibfk_1` FOREIGN KEY (`Make_ID`) REFERENCES `Manufacturer` (`Make_ID`),
-  ADD CONSTRAINT `chasis_ibfk_2` FOREIGN KEY (`Form_ID`) REFERENCES `Form_Factor` (`Form_ID`);
+ALTER TABLE `Chassis`
+  ADD CONSTRAINT `chassis_ibfk_1` FOREIGN KEY (`Make_ID`) REFERENCES `Manufacturer` (`Make_ID`),
+  ADD CONSTRAINT `chassis_ibfk_2` FOREIGN KEY (`Form_ID`) REFERENCES `Form_Factor` (`Form_ID`);
 
 --
 -- Constraints for table `CPU`
@@ -660,7 +779,7 @@ ALTER TABLE `Motherboard`
 --
 ALTER TABLE `PC_Build`
   ADD CONSTRAINT `pc_build_ibfk_1` FOREIGN KEY (`User_ID`) REFERENCES `User` (`User_ID`),
-  ADD CONSTRAINT `pc_build_ibfk_2` FOREIGN KEY (`Chasis_ID`) REFERENCES `Chasis` (`Chasis_ID`),
+  ADD CONSTRAINT `pc_build_ibfk_2` FOREIGN KEY (`Chassis_ID`) REFERENCES `chassis` (`Chassis_ID`),
   ADD CONSTRAINT `pc_build_ibfk_3` FOREIGN KEY (`PSU_ID`) REFERENCES `Power_Supply` (`PSU_ID`),
   ADD CONSTRAINT `pc_build_ibfk_4` FOREIGN KEY (`RAM_ID`) REFERENCES `RAM` (`RAM_ID`),
   ADD CONSTRAINT `pc_build_ibfk_5` FOREIGN KEY (`CPU_ID`) REFERENCES `CPU` (`CPU_ID`),

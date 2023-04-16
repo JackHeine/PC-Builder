@@ -12,6 +12,7 @@
         $stmt->bind_param("iii", $_POST['motherboard_id'], $_GET['id'], $_SESSION['user_id']);
         $stmt->execute();
         
+        header("Location: ./index.php?id=" . $_GET['id']);
     }
 
 
@@ -27,14 +28,15 @@
 ?>
 
 <div class="container">
-    <h1><?= $build['Nickname'] ?></h1>
-    <nav aria-label="breadcrumb">
+<nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="../dashboard.php">Dashboard</a></li>
             <li class="breadcrumb-item"><a href="./index.php?id=<?php echo($build['PC_ID']); ?>"><?= $build['Nickname'] ?></a></li>
             <li class="breadcrumb-item active" aria-current="page">Choose Motherboard</li>
         </ol>
     </nav>
+<?php include 'header.php' ?>
+    
     <h3>Choose a Motherboard</h3>
     <form method="POST">
     <?php
