@@ -4,7 +4,7 @@
     require_once("../../dbConnect.php");
 
     if(isset($_POST['delete'])) {
-        $stmt = $conn->prepare("DELETE FROM cpu WHERE CPU_ID =   ?");
+        $stmt = $conn->prepare("DELETE FROM CPU WHERE CPU_ID =   ?");
         $stmt->bind_param("i", $_GET['id']);
         $stmt->execute();
         header("Location: index.php");
@@ -12,13 +12,13 @@
 
     if(isset($_POST['model'])){
         
-        $stmt = $conn->prepare("UPDATE cpu SET Model = ?, Make_ID = ?, Socket_ID = ?, Power_Usage = ?, Cost = ?, Stock = ? WHERE CPU_ID = ?");
+        $stmt = $conn->prepare("UPDATE CPU SET Model = ?, Make_ID = ?, Socket_ID = ?, Power_Usage = ?, Cost = ?, Stock = ? WHERE CPU_ID = ?");
         $stmt->bind_param("siiidii", $_POST['model'], $_POST['make'], $_POST['socket'], $_POST['power'], $_POST['cost'], $_POST['stock'], $_GET['id']);
         $stmt->execute();
         header("Location: index.php");
     }
     if(isset($_GET['id'])){
-        $stmt = $conn->prepare("SELECT * FROM cpu WHERE CPU_ID = ?");
+        $stmt = $conn->prepare("SELECT * FROM CPU WHERE CPU_ID = ?");
         $stmt->bind_param("i", $_GET['id']);
         $stmt->execute();
         $results = $stmt->get_result();
@@ -46,7 +46,7 @@
                 <select class="form-select" name="make" for="make" required>
                     <?php
                     require_once("../../dbConnect.php");
-                    $sql = "SELECT * FROM manufacturer";
+                    $sql = "SELECT * FROM Manufacturer";
                     $results =$conn->query($sql);
                     foreach($results as $r){
                         echo "<option value='" . $r['Make_ID'] . "'";
@@ -63,7 +63,7 @@
                 <select class="form-select" name="socket" for="socket" required>
                     <?php
                     require_once("../../dbConnect.php");
-                    $sql = "SELECT * FROM socket";
+                    $sql = "SELECT * FROM Socket";
                     $results =$conn->query($sql);
                     foreach($results as $r){
                         echo "<option value='" . $r['Socket_ID']. "'";

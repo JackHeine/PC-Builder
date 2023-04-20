@@ -4,21 +4,21 @@
     require_once("../../dbConnect.php");
 
     if(isset($_POST['delete'])){
-        $stmt = $conn->prepare("DELETE FROM motherboard WHERE Motherboard_ID = ?");
+        $stmt = $conn->prepare("DELETE FROM Motherboard WHERE Motherboard_ID = ?");
         $stmt->bind_param("i", $_GET['id']);
         $stmt->execute();
         header("Location: index.php");
     }
 
     if(isset($_POST['model'])){
-        $stmt = $conn->prepare("UPDATE motherboard SET Model = ?, Make_ID = ?, Socket_ID = ?, Form_ID = ?, Cost = ?, Stock = ? WHERE Motherboard_ID = ?");
+        $stmt = $conn->prepare("UPDATE Motherboard SET Model = ?, Make_ID = ?, Socket_ID = ?, Form_ID = ?, Cost = ?, Stock = ? WHERE Motherboard_ID = ?");
         $stmt->bind_param("siiidii", $_POST['model'], $_POST['make'], $_POST['socket'], $_POST['form-factor'], $_POST['cost'], $_POST['stock'], $_GET['id']);
         $stmt->execute();
         header("Location: index.php");
     }
     
     if(isset($_GET['id'])){
-        $stmt = $conn->prepare("SELECT * FROM motherboard WHERE Motherboard_ID = ?");
+        $stmt = $conn->prepare("SELECT * FROM Motherboard WHERE Motherboard_ID = ?");
         $stmt->bind_param("i", $_GET['id']);
         $stmt->execute();
         $results = $stmt->get_result();
@@ -46,7 +46,7 @@
                 <select class="form-select" name="make" for="make" required>
                     <?php
                     require_once("../../dbConnect.php");
-                    $sql = "SELECT * FROM manufacturer";
+                    $sql = "SELECT * FROM Manufacturer";
                     $results =$conn->query($sql);
                     foreach($results as $r){
                         echo "<option value='" . $r['Make_ID'] . "'";
@@ -63,7 +63,7 @@
                 <select class="form-select" name="socket" for="socket" required>
                     <?php
                     require_once("../../dbConnect.php");
-                    $sql = "SELECT * FROM socket";
+                    $sql = "SELECT * FROM Socket";
                     $results =$conn->query($sql);
                     foreach($results as $r){
                         echo "<option value='" . $r['Socket_ID']. "'";
@@ -80,7 +80,7 @@
                 <select class="form-select" name="form-factor" for="form-factor" required>
                     <?php
                     require_once("../../dbConnect.php");
-                    $sql = "SELECT * FROM form_factor";
+                    $sql = "SELECT * FROM Form_Factor";
                     $results =$conn->query($sql);
                     foreach($results as $r){
                         echo "<option value='" . $r['Form_ID'] . "'";

@@ -4,8 +4,8 @@
 
     if(isset($_POST['model'])){
         require_once("../../dbConnect.php");
-        echo "INSERT INTO cpu (Model, Make_ID, Socket_ID, Power_Usage, Cost, Stock) VALUES ('" . $_POST['model'] . "', '" . (int)$_POST['make'] . "', '" . (int)$_POST['socket'] . "', '" . (int)$_POST['power'] . "', '" . (float)$_POST['cost'] . "', '" . (int)$_POST['stock'] . "')";
-        $sql = "INSERT INTO cpu (Model, Make_ID, Socket_ID, Power_Usage, Cost, Stock) VALUES ('" . $_POST['model'] . "', '" . (int)$_POST['make'] . "', '" . (int)$_POST['socket'] . "', '" . (int)$_POST['power'] . "', '" . (float)$_POST['cost'] . "', '" . (int)$_POST['stock'] . "')";
+        echo "INSERT INTO CPU (Model, Make_ID, Socket_ID, Power_Usage, Cost, Stock) VALUES ('" . $_POST['model'] . "', '" . (int)$_POST['make'] . "', '" . (int)$_POST['socket'] . "', '" . (int)$_POST['power'] . "', '" . (float)$_POST['cost'] . "', '" . (int)$_POST['stock'] . "')";
+        $sql = "INSERT INTO CPU (Model, Make_ID, Socket_ID, Power_Usage, Cost, Stock) VALUES ('" . $_POST['model'] . "', '" . (int)$_POST['make'] . "', '" . (int)$_POST['socket'] . "', '" . (int)$_POST['power'] . "', '" . (float)$_POST['cost'] . "', '" . (int)$_POST['stock'] . "')";
         $stmt = $conn->prepare("INSERT INTO cpu (Model, Make_ID, Socket_ID, Power_Usage, Cost, Stock) VALUES (?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("siiidi", $_POST['model'], $_POST['make'], $_POST['socket'], $_POST['power'], $_POST['cost'], $_POST['stock']);
         $stmt->execute();
@@ -33,7 +33,7 @@
                 <select class="form-select" name="make" for="make" required>
                     <?php
                     require_once("../../dbConnect.php");
-                    $sql = "SELECT * FROM manufacturer";
+                    $sql = "SELECT * FROM Manufacturer";
                     $results =$conn->query($sql);
                     foreach($results as $r){
                         echo "<option value='" . $r['Make_ID'] . "'>" . $r['Manufacturer'] . "</option>";
@@ -46,7 +46,7 @@
                 <select class="form-select" name="socket" for="socket" required>
                     <?php
                     require_once("../../dbConnect.php");
-                    $sql = "SELECT * FROM socket";
+                    $sql = "SELECT * FROM Socket";
                     $results =$conn->query($sql);
                     foreach($results as $r){
                         echo "<option value='" . $r['Socket_ID'] . "'>" . $r['Name'] . "</option>";

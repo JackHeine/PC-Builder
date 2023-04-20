@@ -4,7 +4,7 @@
     require_once("../../dbConnect.php");
 
     if(isset($_POST['delete'])) {
-        $stmt = $conn->prepare("DELETE FROM power_supply WHERE PSU_ID = ?");
+        $stmt = $conn->prepare("DELETE FROM Power_Supply WHERE PSU_ID = ?");
         $stmt->bind_param("i", $_GET['id']);
         $stmt->execute();
         header("Location: index.php");
@@ -12,13 +12,13 @@
 
     if(isset($_POST['model'])){
         
-        $stmt = $conn->prepare("UPDATE power_supply SET Model = ?, Make_ID = ?, Wattage = ?, Cost = ?, Stock = ? WHERE PSU_ID = ?");
+        $stmt = $conn->prepare("UPDATE Power_Supply SET Model = ?, Make_ID = ?, Wattage = ?, Cost = ?, Stock = ? WHERE PSU_ID = ?");
         $stmt->bind_param("siidii", $_POST['model'], $_POST['make'], $_POST['wattage'], $_POST['cost'], $_POST['stock'],  $_GET['id']);
         $stmt->execute();
         header("Location: index.php");
     }
     if(isset($_GET['id'])){
-        $stmt = $conn->prepare("SELECT * FROM power_supply WHERE PSU_ID =  ?");
+        $stmt = $conn->prepare("SELECT * FROM Power_Supply WHERE PSU_ID =  ?");
         $stmt->bind_param("i", $_GET['id']);
         $stmt->execute();
         $results = $stmt->get_result();
@@ -46,7 +46,7 @@
                 <select class="form-select" name="make" for="make" required>
                     <?php
                     require_once("../../dbConnect.php");
-                    $sql = "SELECT * FROM manufacturer";
+                    $sql = "SELECT * FROM Manufacturer";
                     $results =$conn->query($sql);
                     foreach($results as $r){
                         echo "<option value='" . $r['Make_ID'] . "'";

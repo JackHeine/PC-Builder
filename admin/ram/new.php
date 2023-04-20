@@ -4,7 +4,7 @@
 
     if(isset($_POST['model'])){
         require_once("../../dbConnect.php");
-        $stmt = $conn->prepare("INSERT INTO ram (Model, Make_ID, Size, Speed, Cost, Stock) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO RAM (Model, Make_ID, Size, Speed, Cost, Stock) VALUES (?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("siiidi", $_POST['model'], $_POST['make'], $_POST['size'], $_POST['speed'], $_POST['cost'], $_POST['stock']);
         $stmt->execute();
         header("Location: index.php");
@@ -31,7 +31,7 @@
                 <select class="form-select" name="make" for="make" required>
                     <?php
                     require_once("../../dbConnect.php");
-                    $sql = "SELECT * FROM manufacturer";
+                    $sql = "SELECT * FROM Manufacturer";
                     $results =$conn->query($sql);
                     foreach($results as $r){
                         echo "<option value='" . $r['Make_ID'] . "'>" . $r['Manufacturer'] . "</option>";

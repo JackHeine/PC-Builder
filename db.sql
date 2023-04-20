@@ -3,6 +3,7 @@
 --
 -- BEFORE EXECUTING THIS SCRIPT, PLEASE READ THE FOLLOWING:
 -- To Ensure that the script runs correctly, please ensure that you have the following:
+-- utf8mb4-general-ci is the needed collation for the database to work correctly
 -- SET GLOBAL log_bin_trust_function_creators = 1
 -- WITHOUT THIS, THE SCRIPT WILL NOT RUN CORRECTLY FUNCTIONS WONT BE CREATED
 --

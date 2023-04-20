@@ -6,7 +6,7 @@
     session_start();
 
     require_once('./../dbConnect.php');
-    $stmt = $conn->prepare("SELECT * FROM pc_build WHERE PC_ID = ? AND User_ID = ?");
+    $stmt = $conn->prepare("SELECT * FROM PC_Build WHERE PC_ID = ? AND User_ID = ?");
     $stmt->bind_param("ii", $_GET['id'], $_SESSION['user_id']);
     $stmt->execute();
     $result = $stmt->get_result();

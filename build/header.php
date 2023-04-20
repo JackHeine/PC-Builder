@@ -5,19 +5,19 @@
     session_start();
 
     require_once('./../dbConnect.php');
-    $stmt = $conn->prepare("SELECT * FROM pc_build WHERE PC_ID = ? AND User_ID = ?");
+    $stmt = $conn->prepare("SELECT * FROM PC_Build WHERE PC_ID = ? AND User_ID = ?");
     $stmt->bind_param("ii", $_GET['id'], $_SESSION['user_id']);
     $stmt->execute();
     $result = $stmt->get_result();
     $build = $result->fetch_assoc();
 
-    $stmt = $conn->prepare("SELECT current_build_percent(?) AS Percent");
+    $stmt = $conn->prepare("SELECT Current_Build_Percent(?) AS Percent");
     $stmt->bind_param("i", $build['PC_ID']);
     $stmt->execute();
     $result = $stmt->get_result();
     $percent = $result->fetch_assoc();
 
-    $stmt = $conn->prepare("SELECT current_build_price(?) AS Price");
+    $stmt = $conn->prepare("SELECT Current_Build_Price(?) AS Price");
     $stmt->bind_param("i", $build['PC_ID']);
     $stmt->execute();
     $result = $stmt->get_result();

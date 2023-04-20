@@ -54,7 +54,7 @@
             <tbody>
                 <?php
 
-                    $sql = "SELECT * FROM pc_build WHERE User_ID = " . $_SESSION['user_id'] . ";";
+                    $sql = "SELECT * FROM PC_Build WHERE User_ID = " . $_SESSION['user_id'] . ";";
                     $results =$conn->query($sql);
 
                     foreach($results as $r){
