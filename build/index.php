@@ -132,7 +132,7 @@
     <?php
         
         if($build['Chassis_ID']) {
-            $stmt = $conn->prepare("SELECT * FROM chassis_info WHERE Chassis_ID = ?");
+            $stmt = $conn->prepare("SELECT * FROM chasis_info WHERE Chassis_ID = ?");
             $stmt->bind_param("i", $build['Chassis_ID']);
             $stmt->execute();
             $result = $stmt->get_result();
