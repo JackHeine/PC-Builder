@@ -32,7 +32,7 @@
                     if (!$conn) {
                         die("Connection failed: " . mysqli_connect_error());
                     }
-                    $sql = "SELECT * FROM chasis_info";
+                    $sql = "SELECT * FROM chassis_info";
                     $results =$conn->query($sql);
 
                     foreach($results as $r){

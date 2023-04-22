@@ -131,6 +131,7 @@ CREATE TABLE `Storage` (
   `Model` varchar(50) NOT NULL,
   `Make_ID` int(11) NOT NULL,
   `Type_ID` int(11) NOT NULL,
+  `Size` int(11) NOT NULL,
   `Cost` decimal(7,2) NOT NULL,
   `Stock` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -258,7 +259,7 @@ ALTER TABLE `Motherboard`
 ALTER TABLE `PC_Build`
   ADD PRIMARY KEY (`PC_ID`),
   ADD KEY `User_ID` (`User_ID`),
-  ADD KEY `Chasis_ID` (`Chassis_ID`),
+  ADD KEY `Chassis_ID` (`Chassis_ID`),
   ADD KEY `PSU_ID` (`PSU_ID`),
   ADD KEY `RAM_ID` (`RAM_ID`),
   ADD KEY `CPU_ID` (`CPU_ID`),
@@ -453,7 +454,7 @@ ALTER TABLE `Storage`
 -- =====================----
 
 
-CREATE VIEW `chasis_info` AS (
+CREATE VIEW `chassis_info` AS (
     SELECT * FROM `Chassis`
     NATURAL JOIN `Manufacturer`
     NATURAL JOIN `Form_Factor`
@@ -567,3 +568,4 @@ RETURN Price;
 END$$
 
 DELIMITER ;
+

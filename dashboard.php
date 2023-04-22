@@ -46,8 +46,7 @@
                 <tr>
                 <th scope="col">Name</th>
                 <th scope="col">Cost</th>
-                <th scope="col">Ordered</th>
-                <th scope="col">Shipped</th>
+                <th scope="col">Status</th>
                 <th scope="col"></th>
                 </tr>
             </thead>
@@ -60,10 +59,28 @@
                     foreach($results as $r){
                         echo "<tr>";
                         echo "<td>" . $r['Nickname'] . "</td>";
-                        echo "<td>" . $r['Cost'] . "</td>";
-                        echo "<td>" . $r['Order_Placed'] . "</td>";
-                        echo "<td>" . $r['Shipped'] . "</td>";
-                        echo "<td><a href='./build/index.php?id=" . $r['PC_ID'] . "'>View</a></td>";
+                        if($r['Price'] == Null) {
+                            $stmt = $conn->prepare("SELECT Current_Build_Price(?) AS Price");
+                            $stmt->bind_param("i", $r['PC_ID']);
+                            $stmt->execute();
+                            $result = $stmt->get_result();
+                            $price = $result->fetch_assoc();
+                            echo "<td>Est. $" . $price['Price'] . "</td>";
+                        } else {
+                            echo "<td>$" . $r['Price'] . "</td>";
+                        }
+                        
+                        if($r['Order_Placed'] == 0) {
+                            echo "<td>Build In Progress</td>";
+                            echo "<td><a href='./build/index.php?id=" . $r['PC_ID'] . "'>Edit</a></td>";
+                        } else {
+                            if($r['Shipped'] == 1) {
+                                echo "<td>Order Shipped</td>";
+                            } else {
+                                echo "<td>Order Placed</td>";
+                            }
+                            echo "<td><a href='./build/order.php?id=" . $r['PC_ID'] . "'>View</a></td>";
+                        }
                         echo "</tr>";
                     }
 

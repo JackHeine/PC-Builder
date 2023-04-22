@@ -46,7 +46,7 @@
                 <select class="form-select" name="make" for="make" required>
                     <?php
                     require_once("../../dbConnect.php");
-                    $sql = "SELECT * FROM manufacturer";
+                    $sql = "SELECT * FROM Manufacturer";
                     $results =$conn->query($sql);
                     foreach($results as $r){
                         echo "<option value='" . $r['Make_ID'] . "'";

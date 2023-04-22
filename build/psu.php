@@ -8,7 +8,7 @@
     require_once('./../dbConnect.php');
 
     if($_POST['psu_id']) {
-        $stmt = $conn->prepare("UPDATE pc_build SET PSU_ID = ? WHERE PC_ID = ? AND User_ID = ?");
+        $stmt = $conn->prepare("UPDATE PC_Build SET PSU_ID = ? WHERE PC_ID = ? AND User_ID = ?");
         $stmt->bind_param("iii", $_POST['psu_id'], $_GET['id'], $_SESSION['user_id']);
         $stmt->execute();
         
@@ -16,11 +16,20 @@
     }
 
 
-    $stmt = $conn->prepare("SELECT * FROM pc_build WHERE PC_ID = ? AND User_ID = ?");
+    $stmt = $conn->prepare("SELECT * FROM PC_Build WHERE PC_ID = ? AND User_ID = ?");
     $stmt->bind_param("ii", $_GET['id'], $_SESSION['user_id']);
     $stmt->execute();
     $result = $stmt->get_result();
     $build = $result->fetch_assoc();
+
+    // If the build doesn't exist, redirect to the dashboard
+     if(!$build) {
+        header("Location: ./../dashboard.php");
+    }
+    // If the build is complete, redirect to the order
+    if($build['Order_Placed'] == 1) {
+        header("Location: ./order.php?id=". $_GET['id']);
+    }
 
 
     $sql = "SELECT * FROM psu_info";

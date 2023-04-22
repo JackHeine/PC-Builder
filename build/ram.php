@@ -22,6 +22,15 @@
     $result = $stmt->get_result();
     $build = $result->fetch_assoc();
 
+    // If the build doesn't exist, redirect to the dashboard
+     if(!$build) {
+        header("Location: ./../dashboard.php");
+    }
+    // If the build is complete, redirect to the order
+    if($build['Order_Placed'] == 1) {
+        header("Location: ./order.php?id=". $_GET['id']);
+    }
+
 
     $sql = "SELECT * FROM ram_info";
     $results =$conn->query($sql);
