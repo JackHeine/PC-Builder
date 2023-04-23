@@ -25,6 +25,12 @@ CREATE TABLE `Chassis` (
   `Form_ID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+INSERT INTO `Chassis` (`Chassis_ID`, `Model`, `Cost`, `Stock`, `Make_ID`, `Form_ID`) VALUES
+(1, 'iCUE 5000X RGB Tempered Glass Mid-Tower', 189.99, 45, 7, 1),
+(2, 'LANCOOL 216', 95.99, 89, 8, 1),
+(3, 'O11-Dynamic-mini', 120.99, 99, 8, 2);
+
+
 CREATE TABLE `CPU` (
   `CPU_ID` int(11) NOT NULL,
   `Model` varchar(50) NOT NULL,
@@ -123,7 +129,8 @@ CREATE TABLE `RAM` (
 
 
 INSERT INTO `RAM` (`RAM_ID`, `Model`, `Make_ID`, `Size`, `Speed`, `Cost`, `Stock`) VALUES
-(1, ' VENGEANCE LPX', 7, 16, 3600, '43.00', 15);
+(1, 'VENGEANCE LPX', 7, 16, 3600, '43.00', 15),
+(2, 'VENGANCE RGP PRO', 7, 32, 3600, '99.00', 20);
 
 
 CREATE TABLE `Storage` (
@@ -135,6 +142,16 @@ CREATE TABLE `Storage` (
   `Cost` decimal(7,2) NOT NULL,
   `Stock` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `Storage` (`Storage_ID`, `Model`, `Make_ID`, `Type_ID`, `Size`, `Cost`, `Stock`) VALUES
+(1, 'P2', 6, 2, 1000, 68.78, 20),
+(2, 'P2', 6, 2, 2000, 126.99, 19),
+(3, 'MX500', 6, 1, 1000, 56.99, 21),
+(4, 'MX500', 6, 1, 2000, 107.21, 70),
+(5, 'Blue', 9, 3, 1000, 39.99, 11),
+(6, 'Blue', 9, 3, 2000, 59.99, 60),
+(7, 'Blue', 9, 3, 4000, 89.99, 35);
+
 
 CREATE TABLE `User` (
   `User_ID` int(11) NOT NULL,
@@ -160,7 +177,9 @@ INSERT INTO `Manufacturer` (`Make_ID`, `Manufacturer`) VALUES
 (4, 'Gigabyte'),
 (5, 'MSI'),
 (6, 'Crucial'),
-(7, 'Corsair');
+(7, 'Corsair')
+(8, 'Lian Li'),
+(9, 'Western Digital');
 
 
 CREATE TABLE `Socket` (
@@ -192,7 +211,7 @@ CREATE TABLE `PC_Build` (
 
 
 INSERT INTO `PC_Build` (`PC_ID`, `Nickname`, `Price`, `Order_Placed`, `Shipped`, `User_ID`, `Chassis_ID`, `PSU_ID`, `RAM_ID`, `CPU_ID`, `Motherboard_ID`, `Storage_ID`, `GPU_ID`) VALUES
-(1, 'foo', NULL, 0, 0, 1, NULL, NULL, NULL, 7, 3, NULL, NULL),
+(1, 'Demo PC', NULL, 0, 0, 1, NULL, NULL, NULL, 7, 3, NULL, NULL),
 (2, 'Test', NULL, 0, 0, 1, NULL, NULL, NULL, 5, 1, NULL, NULL),
 (8, 'Ultimate Gaming', NULL, 0, 0, 1, NULL, NULL, NULL, 9, NULL, NULL, NULL);
 
