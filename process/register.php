@@ -15,7 +15,16 @@
 		$stmt->bind_param("ssss",$_POST['email'], $_POST['password'], $_POST['first-name'], $_POST['last-name']);
 		$stmt->execute();
 
-		header('Location: /login.php');
+		// login the user immediatelly
+
+		$stmt = $conn->preapre("SELECT User_ID FROM User WHERE Email = ? AND Password = ?");
+		$stmt->bind_param("ss", $_POST['email'], $_POST['password']);
+		$stmt->execute();
+		$result = $stmt->get_result()->fetch_assoc();
+
+		$_SESSION['user_id'] = $result['User_ID'];
+
+		header('Location: /');
 		die();
 	}
 ?>
