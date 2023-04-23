@@ -23,7 +23,7 @@
         echo '<div class="alert alert-danger" role="alert">'. $_GET['error'].'</div>';
     }
     ?>
-    <form>
+    <form action="./process/register.php" method="post">
         <div class="form-group">
             <label for="first-name">First Name</label>
             <input type="text" class="form-control" id="first-name" name="first-name" required>

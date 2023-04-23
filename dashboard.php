@@ -1,11 +1,15 @@
 <?php
+
+    session_start();
+    require_once('./dbConnect.php');
+
+    if (!$_SESSION['user_id']) {
+        header('Location: /unauthorized-401.php');
+        die();
+    }
+
     // Include the header
     include 'header.php';
-    // THIS IS A PLACE HOLDER THE USER ID IS STORED IN THE SESSION
-    // THIS SHOULD BE REPLACED BY THE LOGIN MECHANISM
-    session_start();
-    $_SESSION['user_id'] = 1;
-    require_once('./dbConnect.php');
 ?>
 
     <div class="container">
@@ -53,8 +57,10 @@
             <tbody>
                 <?php
 
-                    $sql = "SELECT * FROM PC_Build WHERE User_ID = " . $_SESSION['user_id'] . ";";
-                    $results =$conn->query($sql);
+                    $sql = $conn->prepare("Select * FROM PC_Build WHERE User_ID = ?");
+                    $sql->bind_param("i", $_SESSION['user_id'] );
+                    $sql->execute();
+                    $results = $sql->get_result();
 
                     foreach($results as $r){
                         echo "<tr>";

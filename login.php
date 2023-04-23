@@ -23,7 +23,7 @@
     }
     ?>
     <br>
-    <form>
+    <form action="./process/login.php" method="post">
         <div class="form-group">
             <label for="email">Email</label>
             <input type="text" class="form-control" id="email" name="email" required>
