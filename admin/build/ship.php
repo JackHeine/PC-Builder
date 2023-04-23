@@ -1,38 +1,88 @@
 <?php
     // Include the header
-    include './../header.php';
-
+    include './../../header.php';
+    // THIS IS A PLACE HOLDER THE USER ID IS STORED IN THE SESSION
+    // THIS SHOULD BE REPLACED BY THE LOGIN MECHANISM
     session_start();
 
-    require_once('./../dbConnect.php');
-    $stmt = $conn->prepare("SELECT * FROM PC_Build WHERE PC_ID = ? AND User_ID = ?");
-    $stmt->bind_param("ii", $_GET['id'], $_SESSION['user_id']);
+    require_once('./../../dbConnect.php');
+    $stmt = $conn->prepare("SELECT * FROM PC_Build WHERE PC_ID = ?");
+    $stmt->bind_param("i", $_GET['id']);
     $stmt->execute();
     $result = $stmt->get_result();
     $build = $result->fetch_assoc();
 
+    $stmt = $conn->prepare("SELECT Current_Build_Price(?) AS Price");
+    $stmt->bind_param("i",  $_GET['id']);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $price = $result->fetch_assoc();
+
     // If the build doesn't exist, redirect to the dashboard
     if(!$build) {
-        header("Location: ./../dashboard.php");
-    }
-    // If the build is complete, redirect to the order
-    if($build['Order_Placed'] == 1) {
-        header("Location: ./order.php?id=". $_GET['id']);
+        header("Location: ./index.php");
     }
 
+
+    if($_POST['pc-id']){
+
+        $stmt = $conn->prepare("UPDATE PC_Build SET Order_Placed=TRUE, Shipped=TRUE WHERE  PC_ID = ?");
+        $stmt->bind_param("i", $_POST['pc-id']);
+        $stmt->execute();
+        
+    }
 
 ?>
 
 <div class="container">
-    <nav aria-label="breadcrumb">
+<nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="../dashboard.php">Dashboard</a></li>
-            <li class="breadcrumb-item active" aria-current="page"><?= $build['Nickname'] ?></li>
+            <li class="breadcrumb-item"><a href="../">Admin</a></li>
+            <li class="breadcrumb-item"><a href="./index.php">Build Manager</a></li>
+            <li class="breadcrumb-item active" aria-current="page">View Build</li>
         </ol>
-    </nav>
+</nav>
     
-    <?php include 'header.php' ?>
+    
+<div>
+    <div class="clearfix">
+        <h1 class="float-left">
+            <?= $build['Nickname'] ?>
+        </h1>
+        <h2 class="float-right">
+            <?php if($build['Order_Placed'] == 1) { ?>
+                $<?= $build['Price'] ?>
+            <?php } else { ?>
+                Est. $<?= $price['Price'] ?>
+            <?php } ?>
+            
+        </h2>
+    </div>
 
+</div>
+    <?php
+        if($build['Shipped'] == 1) {
+            echo "<div class='alert alert-primary' role='alert'>
+            This order has been processed and shipped.
+            </div>";
+        } else if($build['Order_Placed'] == 1) {
+            ?>
+            <div class='alert alert-primary' role='alert'>
+                <p>This order has been placed, mark the order as shipped when processed.</p>
+                <form action="" method="post">
+                    <input type="hidden" name="pc-id" value="<?= $build['PC_ID'] ?>">
+                    <button type="submit" class="btn btn-primary">Ship Order</button>
+                </form>
+            </div>
+            <?php
+        } else {
+            echo "<div class='alert alert-primary' role='alert'>
+            This order has not been placed yet!
+            </div>";
+        }
+    ?>
+
+    <hr>
     <h4>CPU</h4>
     <?php
         
@@ -43,10 +93,6 @@
             $result = $stmt->get_result();
             $cpu = $result->fetch_assoc();
             echo "<p class='lead'>". $cpu['Manufacturer'] . ": " . $cpu['Model'] ." ($" . $cpu['Cost'] . ")</p>";
-            echo "<a href='./cpu.php?id=". $_GET['id'] ."' class=''>Change CPU</a>";
-        } else {
-            echo "<p class='lead'>None Selected</p>";
-            echo "<a href='./cpu.php?id=". $_GET['id'] ."' class=''>Select CPU</a>";
         }
     ?>
     <hr>
@@ -60,10 +106,7 @@
             $result = $stmt->get_result();
             $mb = $result->fetch_assoc();
             echo "<p class='lead'>". $mb['Manufacturer'] . ": " . $mb['Model'] ." ($" . $mb['Cost'] .")</p>";
-            echo "<a href='./motherboard.php?id=". $_GET['id'] ."' class=''>Change Motherboard</a>";
-        } else {
-            echo "<p class='lead'>None Selected</p>";
-            echo "<a href='./motherboard.php?id=". $_GET['id'] ."' class=''>Select Motherboard</a>";
+        
         }
     ?>
     <hr>
@@ -77,10 +120,7 @@
             $result = $stmt->get_result();
             $mb = $result->fetch_assoc();
             echo "<p class='lead'>". $mb['Manufacturer'] . ": " . $mb['Model'] ." - ". $mb['Size'] ."GB ($" . $mb['Cost'] .")</p>";
-            echo "<a href='./ram.php?id=". $_GET['id'] ."' class=''>Change RAM</a>";
-        } else {
-            echo "<p class='lead'>None Selected</p>";
-            echo "<a href='./ram.php?id=". $_GET['id'] ."' class=''>Select RAM</a>";
+
         }
     ?>
     <hr>
@@ -94,10 +134,6 @@
             $result = $stmt->get_result();
             $mb = $result->fetch_assoc();
             echo "<p class='lead'>". $mb['Manufacturer'] . ": " . $mb['Model'] ." ($" . $mb['Cost'] .")</p>";
-            echo "<a href='./gpu.php?id=". $_GET['id'] ."' class=''>Change GPU</a>";
-        } else {
-            echo "<p class='lead'>None Selected</p>";
-            echo "<a href='./gpu.php?id=". $_GET['id'] ."' class=''>Select GPU</a>";
         }
     ?>
     <hr>
@@ -111,10 +147,6 @@
             $result = $stmt->get_result();
             $mb = $result->fetch_assoc();
             echo "<p class='lead'>". $mb['Manufacturer'] . ": " . $mb['Model'] ." ($" . $mb['Cost'] .")</p>";
-            echo "<a href='./storage.php?id=". $_GET['id'] ."' class=''>Change Storage</a>";
-        } else {
-            echo "<p class='lead'>None Selected</p>";
-            echo "<a href='./storage.php?id=". $_GET['id'] ."' class=''>Select Storage</a>";
         }
     ?>
     <hr>
@@ -128,10 +160,6 @@
             $result = $stmt->get_result();
             $mb = $result->fetch_assoc();
             echo "<p class='lead'>". $mb['Manufacturer'] . ": " . $mb['Model'] ." ($" . $mb['Cost'] .")</p>";
-            echo "<a href='./psu.php?id=". $_GET['id'] ."' class=''>Change Case</a>";
-        } else {
-            echo "<p class='lead'>None Selected</p>";
-            echo "<a href='./psu.php?id=". $_GET['id'] ."' class=''>Select Case</a>";
         }
     ?>
     <hr>
@@ -145,33 +173,14 @@
             $result = $stmt->get_result();
             $mb = $result->fetch_assoc();
             echo "<p class='lead'>". $mb['Manufacturer'] . ": " . $mb['Model'] ." ($" . $mb['Cost'] .")</p>";
-            echo "<a href='./case.php?id=". $_GET['id'] ."' class=''>Change Case</a>";
-        } else {
-            echo "<p class='lead'>None Selected</p>";
-            echo "<a href='./case.php?id=". $_GET['id'] ."' class=''>Select Case</a>";
         }
     ?>
     <hr>
     <br>
-    <?php 
 
-    $stmt = $conn->prepare("SELECT Current_Build_Percent(?) AS Percent");
-    $stmt->bind_param("i", $build['PC_ID']);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $percent = $result->fetch_assoc();
-
-    if($percent['Percent'] == 100) {
-        echo "<form method='POST' action='./submit.php'><input type='hidden' name='pc-id' value='". $build['PC_ID'] . "'><button type='submit' class='btn btn-lg btn-primary' >Submit Order</button></form>";
-    } else {
-        echo "<button type='button' class='btn btn-lg btn-primary' disabled>Submit Order</button>";
-    }
-    ?>
-    
-    <br>
     <br>
 </div>
 
 <?php
-    include './../footer.php';
+    include './../../footer.php';
 ?>

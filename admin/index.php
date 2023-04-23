@@ -16,6 +16,10 @@
             <li><a href="./storage/index.php">Storage</a></li>
             <li><a href="./case/index.php">Case</a></li>
         </ul>
+        <h2>Build Manager</h2>
+        <ul>
+            <li><a href="./build/index.php">All Builds</a></li>
+        </ul>
         
     </div>
 

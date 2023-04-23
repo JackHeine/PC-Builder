@@ -1,8 +1,7 @@
 <?php
     // Include the header
     include './../header.php';
-    // THIS IS A PLACE HOLDER THE USER ID IS STORED IN THE SESSION
-    // THIS SHOULD BE REPLACED BY THE LOGIN MECHANISM
+
     session_start();
 
     require_once('./../dbConnect.php');
