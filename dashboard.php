@@ -4,7 +4,7 @@
     require_once('./dbConnect.php');
 
     if (!$_SESSION['user_id']) {
-        header('Location: /unauthorized-401.php');
+        header('Location: ./unauthorized-401.php');
         die();
     }
 
@@ -94,6 +94,7 @@
                 ?>
             </tbody>
         </table>
+        <a class="btn btn-danger" href="./process/logout.php">Logout</a>
     </div>
 
     

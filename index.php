@@ -31,6 +31,7 @@
         <p class="lead">
           <a href="dashboard.php" class="btn btn-lg btn-secondary">Start Building</a>
         </p>
+        <a class="btn btn-danger" href="./process/logout.php">Logout</a>
 
         <?php } ?>
 
