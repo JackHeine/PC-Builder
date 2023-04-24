@@ -53,10 +53,18 @@
             echo "<div class='card'>";
             echo "<div class='card-body'>";
             if($gpu['GPU_ID'] == $build['GPU_ID']) {
-                echo "<div class='form-check'><input class='form-check-input' type='radio' name='gpu_id' id='gpu-". $gpu['GPU_ID']."' value='". $gpu['GPU_ID']."' checked><label class='form-check-label' for='gpu-". $gpu['GPU_ID']."'><h5 class='card-title'>" . $gpu['Manufacturer'] . ": " . $gpu['Model'] . "</label></div></h5>";
+                if($gpu['Stock'] != '0')
+                    echo "<div class='form-check'><input class='form-check-input' type='radio' name='gpu_id' id='gpu-". $gpu['GPU_ID']."' value='". $gpu['GPU_ID']."' checked><label class='form-check-label' for='gpu-". $gpu['GPU_ID']."'><h5 class='card-title'>" . $gpu['Manufacturer'] . ": " . $gpu['Model'] . "</label></div></h5>";
+                else
+                    echo "<div class='form-check'><input class='form-check-input' type='radio' name='gpu_id' id='gpu-". $gpu['GPU_ID']."' value='". $gpu['GPU_ID']."' disabled checked><label class='form-check-label' for='gpu-". $gpu['GPU_ID']."'><h5 class='card-title'>" . $gpu['Manufacturer'] . ": " . $gpu['Model'] . " - Out of Stock</label></div></h5>";
+
             
             } else {
-                echo "<div class='form-check'><input class='form-check-input' type='radio' name='gpu_id' id='gpu-". $gpu['GPU_ID']."' value='". $gpu['GPU_ID']."'><label class='form-check-label' for='gpu-". $gpu['GPU_ID']."'><h5 class='card-title'>" . $gpu['Manufacturer'] . ": " . $gpu['Model'] . "</label></div></h5>";
+                if($gpu['Stock'] != '0') 
+                    echo "<div class='form-check'><input class='form-check-input' type='radio' name='gpu_id' id='gpu-". $gpu['GPU_ID']."' value='". $gpu['GPU_ID']."'><label class='form-check-label' for='gpu-". $gpu['GPU_ID']."'><h5 class='card-title'>" . $gpu['Manufacturer'] . ": " . $gpu['Model'] . "</label></div></h5>";
+                else 
+                    echo "<div class='form-check'><input class='form-check-input' type='radio' name='gpu_id' id='gpu-". $gpu['GPU_ID']."' value='". $gpu['GPU_ID']."' disabled><label class='form-check-label' for='gpu-". $gpu['GPU_ID']."'><h5 class='card-title'>" . $gpu['Manufacturer'] . ": " . $gpu['Model'] . " - Out of Stcok </label></div></h5>";
+                
             }
             echo "<p class='card-text'></p>";
             echo "<p class='card-text'>Price: $" . $gpu['Cost'] . ", Memory: " . $gpu['Memory'] . "GB, Power Usage: " . $gpu['Power_Usage'] . "W </p>";

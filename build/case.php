@@ -53,10 +53,16 @@
             echo "<div class='card'>";
             echo "<div class='card-body'>";
             if($case['Chassis_ID'] == $build['Chassis_ID']) {
-                echo "<div class='form-check'><input class='form-check-input' type='radio' name='case_id' id='case-". $case['Chassis_ID']."' value='". $case['Chassis_ID']."' checked><label class='form-check-label' for='case-". $case['Chassis_ID']."'><h5 class='card-title'>" . $case['Manufacturer'] . ": " . $case['Model'] . "</label></div></h5>";
-            
+                if($case['Stock'] != '0')
+                    echo "<div class='form-check'><input class='form-check-input' type='radio' name='case_id' id='case-". $case['Chassis_ID']."' value='". $case['Chassis_ID']."' checked><label class='form-check-label' for='case-". $case['Chassis_ID']."'><h5 class='card-title'>" . $case['Manufacturer'] . ": " . $case['Model'] . "</label></div></h5>";
+                else
+                    echo "<div class='form-check'><input class='form-check-input' type='radio' name='case_id' id='case-". $case['Chassis_ID']."' value='". $case['Chassis_ID']."' disabled checked><label class='form-check-label' for='case-". $case['Chassis_ID']."'><h5 class='card-title'>" . $case['Manufacturer'] . ": " . $case['Model'] . " - Out of Stock</label></div></h5>";
+
             } else {
-                echo "<div class='form-check'><input class='form-check-input' type='radio' name='case_id' id='case-". $case['Chassis_ID']."' value='". $case['Chassis_ID']."'><label class='form-check-label' for='case-". $case['Chassis_ID']."'><h5 class='card-title'>" . $case['Manufacturer'] . ": " . $case['Model'] . "</label></div></h5>";
+                if($case['Stock'] != '0')
+                    echo "<div class='form-check'><input class='form-check-input' type='radio' name='case_id' id='case-". $case['Chassis_ID']."' value='". $case['Chassis_ID']."'><label class='form-check-label' for='case-". $case['Chassis_ID']."'><h5 class='card-title'>" . $case['Manufacturer'] . ": " . $case['Model'] . "</label></div></h5>";
+                else
+                    echo "<div class='form-check'><input class='form-check-input' type='radio' name='case_id' id='case-". $case['Chassis_ID']."' value='". $case['Chassis_ID']."' disabled><label class='form-check-label' for='case-". $case['Chassis_ID']."'><h5 class='card-title'>" . $case['Manufacturer'] . ": " . $case['Model'] . " - Out of Stock</label></div></h5>";
             }
             echo "<p class='card-text'></p>";
             echo "<p class='card-text'>Price: $" . $case['Cost'] . ", Form Factor: " . $case['Form_Name'] . "</p>";

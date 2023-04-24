@@ -53,10 +53,17 @@
             echo "<div class='card'>";
             echo "<div class='card-body'>";
             if($cpu['CPU_ID'] == $build['CPU_ID']) {
-                echo "<div class='form-check'><input class='form-check-input' type='radio' name='cpu_id' id='cpu-". $cpu['CPU_ID']."' value='". $cpu['CPU_ID']."' checked><label class='form-check-label' for='cpu-". $cpu['CPU_ID']."'><h5 class='card-title'>" . $cpu['Manufacturer'] . ": " . $cpu['Model'] . "</label></div></h5>";
-            
+                if($cpu['Stock'] != '0')
+                    echo "<div class='form-check'><input class='form-check-input' type='radio' name='cpu_id' id='cpu-". $cpu['CPU_ID']."' value='". $cpu['CPU_ID']."' checked><label class='form-check-label' for='cpu-". $cpu['CPU_ID']."'><h5 class='card-title'>" . $cpu['Manufacturer'] . ": " . $cpu['Model'] . "</label></div></h5>";
+                else
+                    echo "<div class='form-check'><input class='form-check-input' type='radio' name='cpu_id' id='cpu-". $cpu['CPU_ID']."' value='". $cpu['CPU_ID']."' disabled checked><label class='form-check-label' for='cpu-". $cpu['CPU_ID']."'><h5 class='card-title'>" . $cpu['Manufacturer'] . ": " . $cpu['Model'] . " - Out of Stock</label></div></h5>";
+
             } else {
-                echo "<div class='form-check'><input class='form-check-input' type='radio' name='cpu_id' id='cpu-". $cpu['CPU_ID']."' value='". $cpu['CPU_ID']."'><label class='form-check-label' for='cpu-". $cpu['CPU_ID']."'><h5 class='card-title'>" . $cpu['Manufacturer'] . ": " . $cpu['Model'] . "</label></div></h5>";
+                if($cpu['Stock'] != '0')
+                    echo "<div class='form-check'><input class='form-check-input' type='radio' name='cpu_id' id='cpu-". $cpu['CPU_ID']."' value='". $cpu['CPU_ID']."'><label class='form-check-label' for='cpu-". $cpu['CPU_ID']."'><h5 class='card-title'>" . $cpu['Manufacturer'] . ": " . $cpu['Model'] . "</label></div></h5>";
+                else 
+                    echo "<div class='form-check'><input class='form-check-input' type='radio' name='cpu_id' id='cpu-". $cpu['CPU_ID']."' value='". $cpu['CPU_ID']."' disabled><label class='form-check-label' for='cpu-". $cpu['CPU_ID']."'><h5 class='card-title'>" . $cpu['Manufacturer'] . ": " . $cpu['Model'] . " - Out of Stock</label></div></h5>";
+                   
             }
             echo "<p class='card-text'></p>";
             echo "<p class='card-text'>Price: $" . $cpu['Cost'] . ", Power Usage: " . $cpu['Power_Usage'] . "W </p>";

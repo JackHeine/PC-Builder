@@ -53,10 +53,15 @@
             echo "<div class='card'>";
             echo "<div class='card-body'>";
             if($ram['RAM_ID'] == $build['RAM_ID']) {
-                echo "<div class='form-check'><input class='form-check-input' type='radio' name='ram_id' id='ram-". $ram['RAM_ID']."' value='". $ram['RAM_ID']."' checked><label class='form-check-label' for='ram-". $ram['RAM_ID']."'><h5 class='card-title'>" . $ram['Manufacturer'] . ": " . $ram['Model'] . "</label></div></h5>";
-            
+                if ($ram['Stock'] != '0')
+                    echo "<div class='form-check'><input class='form-check-input' type='radio' name='ram_id' id='ram-". $ram['RAM_ID']."' value='". $ram['RAM_ID']."' checked><label class='form-check-label' for='ram-". $ram['RAM_ID']."'><h5 class='card-title'>" . $ram['Manufacturer'] . ": " . $ram['Model'] . "</label></div></h5>";
+                else
+                    echo "<div class='form-check'><input class='form-check-input' type='radio' name='ram_id' id='ram-". $ram['RAM_ID']."' value='". $ram['RAM_ID']."' disabled checked><label class='form-check-label' for='ram-". $ram['RAM_ID']."'><h5 class='card-title'>" . $ram['Manufacturer'] . ": " . $ram['Model'] . " - Out of Stock</label></div></h5>";
             } else {
-                echo "<div class='form-check'><input class='form-check-input' type='radio' name='ram_id' id='ram-". $ram['RAM_ID']."' value='". $ram['RAM_ID']."'><label class='form-check-label' for='ram-". $ram['RAM_ID']."'><h5 class='card-title'>" . $ram['Manufacturer'] . ": " . $ram['Model'] ."</label></div></h5>";
+                if ($ram['Stock'] != '0')
+                    echo "<div class='form-check'><input class='form-check-input' type='radio' name='ram_id' id='ram-". $ram['RAM_ID']."' value='". $ram['RAM_ID']."'><label class='form-check-label' for='ram-". $ram['RAM_ID']."'><h5 class='card-title'>" . $ram['Manufacturer'] . ": " . $ram['Model'] ."</label></div></h5>";
+                else
+                    echo "<div class='form-check'><input class='form-check-input' type='radio' name='ram_id' id='ram-". $ram['RAM_ID']."' value='". $ram['RAM_ID']."' disabled><label class='form-check-label' for='ram-". $ram['RAM_ID']."'><h5 class='card-title'>" . $ram['Manufacturer'] . ": " . $ram['Model'] ." - Out of Stock</label></div></h5>";               
             }
             echo "<p class='card-text'></p>";
             echo "<p class='card-text'>Price: $" . $ram['Cost'] . ", Size: " . $ram['Size'] . ", Speed: " . $ram['Speed'] . "MHz </p>";

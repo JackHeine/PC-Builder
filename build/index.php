@@ -42,7 +42,10 @@
             $stmt->execute();
             $result = $stmt->get_result();
             $cpu = $result->fetch_assoc();
-            echo "<p class='lead'>". $cpu['Manufacturer'] . ": " . $cpu['Model'] ." ($" . $cpu['Cost'] . ")</p>";
+            if($cpu['Stock'] != '0')
+                echo "<p class='lead'>". $cpu['Manufacturer'] . ": " . $cpu['Model'] ." ($" . $cpu['Cost'] . ")</p>";
+            else
+                echo "<p class='lead'>". $cpu['Manufacturer'] . ": " . $cpu['Model'] ." ($" . $cpu['Cost'] . ") - <b>Out of Stock</b></p>";
             echo "<a href='./cpu.php?id=". $_GET['id'] ."' class=''>Change CPU</a>";
         } else {
             echo "<p class='lead'>None Selected</p>";
@@ -59,7 +62,11 @@
             $stmt->execute();
             $result = $stmt->get_result();
             $mb = $result->fetch_assoc();
-            echo "<p class='lead'>". $mb['Manufacturer'] . ": " . $mb['Model'] ." ($" . $mb['Cost'] .")</p>";
+            if($mb['Stock'] != '0')
+                echo "<p class='lead'>". $mb['Manufacturer'] . ": " . $mb['Model'] ." ($" . $mb['Cost'] .")</p>";
+            else
+                echo "<p class='lead'>". $mb['Manufacturer'] . ": " . $mb['Model'] ." ($" . $mb['Cost'] .") - <b>Out of Stock</b></p>";
+
             echo "<a href='./motherboard.php?id=". $_GET['id'] ."' class=''>Change Motherboard</a>";
         } else {
             echo "<p class='lead'>None Selected</p>";
@@ -76,7 +83,11 @@
             $stmt->execute();
             $result = $stmt->get_result();
             $mb = $result->fetch_assoc();
-            echo "<p class='lead'>". $mb['Manufacturer'] . ": " . $mb['Model'] ." - ". $mb['Size'] ."GB ($" . $mb['Cost'] .")</p>";
+            if($mb['Stock'] != '0')
+                echo "<p class='lead'>". $mb['Manufacturer'] . ": " . $mb['Model'] ." - ". $mb['Size'] ."GB ($" . $mb['Cost'] .")</p>";
+            else
+                echo "<p class='lead'>". $mb['Manufacturer'] . ": " . $mb['Model'] ." - ". $mb['Size'] ."GB ($" . $mb['Cost'] .") - <b>Out of Stock</b></p>";
+
             echo "<a href='./ram.php?id=". $_GET['id'] ."' class=''>Change RAM</a>";
         } else {
             echo "<p class='lead'>None Selected</p>";
@@ -93,7 +104,11 @@
             $stmt->execute();
             $result = $stmt->get_result();
             $mb = $result->fetch_assoc();
-            echo "<p class='lead'>". $mb['Manufacturer'] . ": " . $mb['Model'] ." ($" . $mb['Cost'] .")</p>";
+            if($mb['Stock'] != '0')
+                echo "<p class='lead'>". $mb['Manufacturer'] . ": " . $mb['Model'] ." ($" . $mb['Cost'] .")</p>";
+            else
+                echo "<p class='lead'>". $mb['Manufacturer'] . ": " . $mb['Model'] ." ($" . $mb['Cost'] .") - <b>Out of Stock</b></p>";
+
             echo "<a href='./gpu.php?id=". $_GET['id'] ."' class=''>Change GPU</a>";
         } else {
             echo "<p class='lead'>None Selected</p>";
@@ -110,7 +125,11 @@
             $stmt->execute();
             $result = $stmt->get_result();
             $mb = $result->fetch_assoc();
-            echo "<p class='lead'>". $mb['Manufacturer'] . ": " . $mb['Model'] ." ($" . $mb['Cost'] .")</p>";
+            if($mb['Stock'] != '0')
+                echo "<p class='lead'>". $mb['Manufacturer'] . ": " . $mb['Model'] ." ($" . $mb['Cost'] .")</p>";
+            else
+                echo "<p class='lead'>". $mb['Manufacturer'] . ": " . $mb['Model'] ." ($" . $mb['Cost'] .") - <b>Out of Stock</b></p>";
+
             echo "<a href='./storage.php?id=". $_GET['id'] ."' class=''>Change Storage</a>";
         } else {
             echo "<p class='lead'>None Selected</p>";
@@ -127,7 +146,11 @@
             $stmt->execute();
             $result = $stmt->get_result();
             $mb = $result->fetch_assoc();
-            echo "<p class='lead'>". $mb['Manufacturer'] . ": " . $mb['Model'] ." ($" . $mb['Cost'] .")</p>";
+            if($mb['Stock'] != '0')
+                echo "<p class='lead'>". $mb['Manufacturer'] . ": " . $mb['Model'] ." ($" . $mb['Cost'] .")</p>";
+            else
+                echo "<p class='lead'>". $mb['Manufacturer'] . ": " . $mb['Model'] ." ($" . $mb['Cost'] .") - <b>Out of Stock</b></p>";
+
             echo "<a href='./psu.php?id=". $_GET['id'] ."' class=''>Change Case</a>";
         } else {
             echo "<p class='lead'>None Selected</p>";
@@ -144,7 +167,11 @@
             $stmt->execute();
             $result = $stmt->get_result();
             $mb = $result->fetch_assoc();
-            echo "<p class='lead'>". $mb['Manufacturer'] . ": " . $mb['Model'] ." ($" . $mb['Cost'] .")</p>";
+            if($mb['Stock'] != '0')
+                echo "<p class='lead'>". $mb['Manufacturer'] . ": " . $mb['Model'] ." ($" . $mb['Cost'] .")</p>";
+            else
+                echo "<p class='lead'>". $mb['Manufacturer'] . ": " . $mb['Model'] ." ($" . $mb['Cost'] .") - <b>Out of Stock</b></p>";
+
             echo "<a href='./case.php?id=". $_GET['id'] ."' class=''>Change Case</a>";
         } else {
             echo "<p class='lead'>None Selected</p>";

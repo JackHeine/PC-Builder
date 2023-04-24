@@ -53,10 +53,15 @@
             echo "<div class='card'>";
             echo "<div class='card-body'>";
             if($psu['PSU_ID'] == $build['PSU_ID']) {
-                echo "<div class='form-check'><input class='form-check-input' type='radio' name='psu_id' id='psu-". $psu['PSU_ID']."' value='". $psu['PSU_ID']."' checked><label class='form-check-label' for='psu-". $psu['PSU_ID']."'><h5 class='card-title'>" . $psu['Manufacturer'] . ": " . $psu['Model'] . "</label></div></h5>";
-            
+                if ($psu['Stock'] != '0')
+                    echo "<div class='form-check'><input class='form-check-input' type='radio' name='psu_id' id='psu-". $psu['PSU_ID']."' value='". $psu['PSU_ID']."' checked><label class='form-check-label' for='psu-". $psu['PSU_ID']."'><h5 class='card-title'>" . $psu['Manufacturer'] . ": " . $psu['Model'] . "</label></div></h5>";
+                else
+                    echo "<div class='form-check'><input class='form-check-input' type='radio' name='psu_id' id='psu-". $psu['PSU_ID']."' value='". $psu['PSU_ID']."' disabled checked><label class='form-check-label' for='psu-". $psu['PSU_ID']."'><h5 class='card-title'>" . $psu['Manufacturer'] . ": " . $psu['Model'] . " - Out of Stock</label></div></h5>";
             } else {
-                echo "<div class='form-check'><input class='form-check-input' type='radio' name='psu_id' id='psu-". $psu['PSU_ID']."' value='". $psu['PSU_ID']."'><label class='form-check-label' for='psu-". $psu['PSU_ID']."'><h5 class='card-title'>" . $psu['Manufacturer'] . ": " . $psu['Model'] . "</label></div></h5>";
+                if ($psu['Stock'] != '0') 
+                    echo "<div class='form-check'><input class='form-check-input' type='radio' name='psu_id' id='psu-". $psu['PSU_ID']."' value='". $psu['PSU_ID']."'><label class='form-check-label' for='psu-". $psu['PSU_ID']."'><h5 class='card-title'>" . $psu['Manufacturer'] . ": " . $psu['Model'] . "</label></div></h5>";
+                else
+                    echo "<div class='form-check'><input class='form-check-input' type='radio' name='psu_id' id='psu-". $psu['PSU_ID']."' value='". $psu['PSU_ID']."' disabled><label class='form-check-label' for='psu-". $psu['PSU_ID']."'><h5 class='card-title'>" . $psu['Manufacturer'] . ": " . $psu['Model'] . " - Out of Stock</label></div></h5>";              
             }
             echo "<p class='card-text'></p>";
             echo "<p class='card-text'>Price: $" . $psu['Cost'] . ", Wattage: " . $psu['Wattage'] . "W </p>";

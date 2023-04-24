@@ -53,10 +53,16 @@
             echo "<div class='card'>";
             echo "<div class='card-body'>";
             if($r['Storage_ID'] == $build['Storage_ID']) {
-                echo "<div class='form-check'><input class='form-check-input' type='radio' name='storage_id' id='md-". $r['Storage_ID']."' value='". $r['Storage_ID']."' checked><label class='form-check-label' for='md-". $r['Storage_ID']."'><h5 class='card-title'>" . $r['Manufacturer'] . ": " . $r['Model'] . " - " . $r['Size']. "GB</label></div></h5>";
-            
+                if ($r['Stock'] != '0')
+                    echo "<div class='form-check'><input class='form-check-input' type='radio' name='storage_id' id='md-". $r['Storage_ID']."' value='". $r['Storage_ID']."' checked><label class='form-check-label' for='md-". $r['Storage_ID']."'><h5 class='card-title'>" . $r['Manufacturer'] . ": " . $r['Model'] . " - " . $r['Size']. "GB</label></div></h5>";
+                else
+                    echo "<div class='form-check'><input class='form-check-input' type='radio' name='storage_id' id='md-". $r['Storage_ID']."' value='". $r['Storage_ID']."' disabled checked><label class='form-check-label' for='md-". $r['Storage_ID']."'><h5 class='card-title'>" . $r['Manufacturer'] . ": " . $r['Model'] . " - " . $r['Size']. "GB - Out of Stock</label></div></h5>";
+
             } else {
-                echo "<div class='form-check'><input class='form-check-input' type='radio' name='storage_id' id='md-". $r['Storage_ID']."' value='". $r['Storage_ID']."'><label class='form-check-label' for='md-". $r['Storage_ID']."'><h5 class='card-title'>" . $r['Manufacturer'] . ": " . $r['Model'] . " - " . $r['Size']. "GB</label></div></h5>";
+                if ($r['Stock'] != '0')
+                    echo "<div class='form-check'><input class='form-check-input' type='radio' name='storage_id' id='md-". $r['Storage_ID']."' value='". $r['Storage_ID']."'><label class='form-check-label' for='md-". $r['Storage_ID']."'><h5 class='card-title'>" . $r['Manufacturer'] . ": " . $r['Model'] . " - " . $r['Size']. "GB</label></div></h5>";
+                else
+                    echo "<div class='form-check'><input class='form-check-input' type='radio' name='storage_id' id='md-". $r['Storage_ID']."' value='". $r['Storage_ID']."' disabled><label class='form-check-label' for='md-". $r['Storage_ID']."'><h5 class='card-title'>" . $r['Manufacturer'] . ": " . $r['Model'] . " - " . $r['Size']. "GB - Out of Stock</label></div></h5>";              
             }
             echo "<p class='card-text'></p>";
             echo "<p class='card-text'>Price: $" . $r['Cost'] . ", Size: " . $r['Size'] ."GB</p>";
