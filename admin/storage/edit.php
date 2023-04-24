@@ -1,5 +1,6 @@
 <?php
     // Include the header
+    include '../admin_verify.php'; // blocks unaothirzed access
     include '../../header.php';
     require_once("../../dbConnect.php");
 

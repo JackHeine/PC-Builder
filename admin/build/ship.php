@@ -1,4 +1,6 @@
 <?php
+    include '../admin_verify.php'; // blocks unaothirzed access
+
     // Include the header
     include './../../header.php';
     // THIS IS A PLACE HOLDER THE USER ID IS STORED IN THE SESSION
