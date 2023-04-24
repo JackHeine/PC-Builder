@@ -155,14 +155,15 @@ INSERT INTO `Storage` (`Storage_ID`, `Model`, `Make_ID`, `Type_ID`, `Size`, `Cos
 
 CREATE TABLE `User` (
   `User_ID` int(11) NOT NULL,
+  `Admin` int(1) NOT NULL DEFAULT 0,
   `Email` varchar(50) NOT NULL,
   `Password` varchar(255) NOT NULL,
   `First_Name` varchar(50) NOT NULL,
   `Last_Name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO `User` (`User_ID`, `Email`, `Password`, `First_Name`, `Last_Name`) VALUES
-(1, 'test@mail.com', 'Password', 'Test', 'Man');
+INSERT INTO `User` (`User_ID`, `Admin`, `Email`, `Password`, `First_Name`, `Last_Name`) VALUES
+(1, 0, 'test@mail.com', 'Password', 'Test', 'Man');
 
 
 CREATE TABLE `Manufacturer` (
@@ -177,7 +178,7 @@ INSERT INTO `Manufacturer` (`Make_ID`, `Manufacturer`) VALUES
 (4, 'Gigabyte'),
 (5, 'MSI'),
 (6, 'Crucial'),
-(7, 'Corsair')
+(7, 'Corsair'),
 (8, 'Lian Li'),
 (9, 'Western Digital');
 

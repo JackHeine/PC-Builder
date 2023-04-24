@@ -11,10 +11,9 @@
 		header('Location: ../signup.php?error=User with that email already exists.');
 		die();
 	} else {
-		$stmt = $conn->prepare("INSERT INTO User VALUES(DEFAULT, ?, ?, ?, ?)");
+		$stmt = $conn->prepare("INSERT INTO User VALUES(DEFAULT, DEFAULT, ?, ?, ?, ?)");
 		$stmt->bind_param("ssss",$_POST['email'], $_POST['password'], $_POST['first-name'], $_POST['last-name']);
-		$stmt->execute();
-		
+		$stmt->execute();		
 
 		// login the user immediatelly
 
@@ -25,7 +24,7 @@
 
 		$_SESSION['user_id'] = $result['User_ID'];
 
-		header('Location: ../');
+		header('Location: /');
 		die();
 	}
 ?>
